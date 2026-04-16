@@ -1,0 +1,32 @@
+# 依赖目录
+node_modules/
+.pnp/
+.pnp.js
+
+# 构建输出
+dist/
+build/
+out/
+*.log
+
+# 环境配置
+.env
+.env.local
+.env.*.local
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# 操作系统
+.DS_Store
+Thumbs.db
+
+# 测试覆盖
+coverage/
+*.lcov
+
+# js-reverse-mcp 子项目
+js-reverse-mcp/
