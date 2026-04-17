@@ -2,7 +2,7 @@
   "mcpServers": {
     "js-reverse": {
       "command": "node",
-      "args": ["d:/code/js-reverse/js-reverse-mcp/build/src/index.js", "--browser-url=http://127.0.0.1:9222"]
+      "args": ["d:/code/js-reverse/utils/js-reverse-mcp/build/src/index.js", "--browserUrl=http://127.0.0.1:9222"]
     },
     "fetch": {
       "command": "uvx",

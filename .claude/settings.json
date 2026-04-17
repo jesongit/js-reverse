@@ -1,9 +1,7 @@
 {
   "permissions": {
     "allow": [
-      "Read(//tmp/reverse-skill/**)",
-      "Bash(mkdir -p .claude/skills/knowledge)",
-      "Bash(cp /tmp/reverse-skill/jsr-reverse/references/*.md .claude/skills/knowledge/)",
+      "*",
       "Edit(/.claude/skills/knowledge/**)"
     ]
   }

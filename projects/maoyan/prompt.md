@@ -1,0 +1,1 @@
+在maoyan 目录中，使用 js-reverse 处理 https://piaofang.maoyan.com/dashboard，交付可以直接执行的python脚本，可以直接运行获取电影票房
