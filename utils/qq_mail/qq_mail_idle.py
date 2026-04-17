@@ -19,21 +19,30 @@ import queue
 import traceback
 import sys
 import os
+from pathlib import Path
 from email.mime.text import MIMEText
 from email.mime.multipart import MIMEMultipart
 
 
 # ── 配置 ──────────────────────────────────────────────
-IMAP_HOST     = "imap.qq.com"
-IMAP_PORT     = 993
+try:
+    from dotenv import load_dotenv
+
+    _ENV_PATH = Path(__file__).resolve().parents[2] / ".env"
+    load_dotenv(_ENV_PATH)
+except Exception:
+    pass
+
+IMAP_HOST     = os.getenv("QQ_MAIL_IMAP_HOST", "imap.qq.com")
+IMAP_PORT     = int(os.getenv("QQ_MAIL_IMAP_PORT", "993"))
 IMAP_USER     = os.getenv("QQ_MAIL_IMAP_USER", "")
 IMAP_PASSWORD = os.getenv("QQ_MAIL_IMAP_PASSWORD", "")
 
-SMTP_HOST        = "smtp.qq.com"
-SMTP_PORT        = 587              # 优先 STARTTLS
-SMTP_PORT_FB     = 465              # 备选 SSL
-SMTP_USER        = IMAP_USER
-SMTP_PASSWORD    = IMAP_PASSWORD
+SMTP_HOST        = os.getenv("QQ_MAIL_SMTP_HOST", "smtp.qq.com")
+SMTP_PORT        = int(os.getenv("QQ_MAIL_SMTP_PORT", "587"))
+SMTP_PORT_FB     = int(os.getenv("QQ_MAIL_SMTP_PORT_FB", "465"))
+SMTP_USER        = os.getenv("QQ_MAIL_SMTP_USER", IMAP_USER)
+SMTP_PASSWORD    = os.getenv("QQ_MAIL_SMTP_PASSWORD", IMAP_PASSWORD)
 
 # IDLE 等待超时时间（RFC 要求最长 29 分钟）
 IDLE_TIMEOUT  = 25 * 60   # 秒

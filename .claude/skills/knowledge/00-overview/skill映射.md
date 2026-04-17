@@ -10,6 +10,7 @@
 | 工具完整参数 | `05-project/tool-reference.md` | 23个工具详细参数 |
 | 反检测配置 | `05-project/反检测工作记录.md` | 根因分析与修复历史 |
 | 最小环境设计 | `02-artifacts/minimal-env-design.md` | 运行时补充节格式 |
+| 独立运行交付优先级 | `05-project/independent-delivery-priority.md` | 纯脚本优先、headless 次之 |
 | 反模式预警 | `03-topics/anti-patterns.md` | 各阶段常见错误 |
 
 ## 知识库索引

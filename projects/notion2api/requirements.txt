@@ -4,3 +4,4 @@ httpx
 python-dotenv
 sse-starlette
 imaplib2
+playwright

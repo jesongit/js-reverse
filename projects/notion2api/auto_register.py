@@ -1,25 +1,16 @@
 """
-Notion 邮箱自动注册 + env 提取脚本。
+Notion 邮箱自动注册 + 多账号 env 管理脚本（Playwright 方案）。
 
 依赖条件：
-  1. js-reverse MCP 已连接并打开浏览器
-  2. utils/qq_mail/qq_mail_idle.py 可用，IMAP 配置有效
-  3. 已安装 imaplib2、python-dotenv
+  1. pip install -r requirements.txt
+  2. playwright install chromium
+  3. utils/qq_mail/qq_mail_idle.py 可用，IMAP 配置有效
 
 用法：
-  python auto_register.py [--env-only]
-    --env-only   跳过注册，仅从当前已登录浏览器页面重新提取 env
-
-注册流程：
-  1. 生成邮箱 posase{timestamp}@pid.im
-  2. 打开注册页，输入邮箱，触发 OTP 发送
-  3. 通过 QQ IMAP 拉取最新 Notion 验证码邮件
-  4. 输入验证码完成登录
-  5. 档案页：填名字（邮箱前缀），取消营销勾选
-  6. 跳过邀请工作空间，创建新工作空间
-  7. 用途页：选择"用于私人生活"
-  8. 跳过桌面应用引导
-  9. 进入主页后提取 Cookie + localStorage + 接口数据，写入 .env
+  python auto_register.py register [--export]
+  python auto_register.py refresh --account <account_id> [--export]
+  python auto_register.py export --account <account_id>
+  python auto_register.py list
 """
 
 import sys
@@ -27,151 +18,75 @@ import io
 import os
 import re
 import time
+import json
+import argparse
 import urllib.parse
+from datetime import datetime
+from pathlib import Path
 
 sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
 sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding="utf-8", errors="replace")
 
-# ── 工具路径 ──────────────────────────────────────────────
-_REPO_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+_PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
+_REPO_ROOT = os.path.dirname(os.path.dirname(_PROJECT_ROOT))
 sys.path.insert(0, os.path.join(_REPO_ROOT, "utils", "qq_mail"))
 
-# QQ 邮箱配置（直接复用 qq_mail_idle.py 中的常量）
-from qq_mail_idle import IMAP_HOST, IMAP_PORT, IMAP_USER, IMAP_PASSWORD, fetch_latest_mail_to
+from qq_mail_idle import fetch_latest_mail_to
 
-ENV_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), ".env")
+from playwright.sync_api import sync_playwright
+
+BASE_DIR = Path(__file__).resolve().parent
+ENV_PATH = BASE_DIR / ".env"
+ACCOUNTS_DIR = BASE_DIR / "accounts"
 SIGNUP_URL = "https://www.notion.so/signup?from=marketing&pathname=%2F"
-OTP_WAIT_SECS = 90
-PAGE_SETTLE_SECS = 3
-
-
-# ── MCP 工具导入 ─────────────────────────────────────────
-# 这些工具仅在 Claude Code MCP 上下文中可用，普通 Python 环境无法直接调用。
-# 本脚本的正确执行方式：由 Claude Agent 通过 mcp__js-reverse 工具集调度。
-try:
-    from mcp__js_reverse__navigate_page import navigate_page
-    from mcp__js_reverse__new_page import new_page
-    from mcp__js_reverse__evaluate_script import evaluate_script
-    from mcp__js_reverse__take_screenshot import take_screenshot
-    from mcp__js_reverse__list_network_requests import list_network_requests
-    MCP_AVAILABLE = True
-except ImportError:
-    MCP_AVAILABLE = False
+HOME_URL = "https://www.notion.so/"
+OTP_WAIT_SECS = 120
+SETTLE_SECS = 3
+HEADLESS_USER_AGENT = (
+    "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
+    "(KHTML, like Gecko) Chrome/135.0.0.0 Safari/537.36"
+)
+HEADLESS_LAUNCH_ARGS = ["--disable-blink-features=AutomationControlled"]
+HEADLESS_INIT_SCRIPT = """
+Object.defineProperty(navigator, 'webdriver', {get: () => undefined});
+Object.defineProperty(navigator, 'languages', {get: () => ['zh-CN', 'zh', 'en-US', 'en']});
+Object.defineProperty(navigator, 'plugins', {get: () => [1, 2, 3, 4, 5]});
+"""
 
 
 def fetch_notion_otp(to_addr: str, sent_after: float, timeout: int = OTP_WAIT_SECS) -> str | None:
     """
     等待并提取发给 to_addr 的 Notion 验证码邮件中的 6 位 OTP。
 
-    通过 sent_after 时间戳过滤，只接受 OTP 触发操作之后到达的邮件，
-    避免历史旧验证码被误命中。
-
     参数：
         to_addr     收件邮箱地址
-        sent_after  Unix 时间戳（秒），在此之前到达的邮件忽略
+        sent_after  Unix 时间戳（秒），此前到达的邮件忽略
         timeout     最长等待秒数
 
-    返回：
-        6 位验证码字符串，或 None（超时未收到）
+    返回：6 位验证码字符串，或 None（超时未收到）
     """
-    print(f"[IMAP] 等待发给 {to_addr} 的 Notion OTP（sent_after={sent_after:.0f}，最多 {timeout}s）...", flush=True)
+    print(f"[IMAP] 等待 Notion OTP → {to_addr}（最多 {timeout}s）...", flush=True)
     mail = fetch_latest_mail_to(
         to_addr=to_addr,
-        sent_after=sent_after,
+        sent_after=max(sent_after - 5, 0),
         sender_filter="notion",
         timeout=timeout,
         poll_interval=3,
     )
     if not mail:
         return None
-
     m = re.search(r"\b(\d{6})\b", mail["body"])
     if m:
-        print(f"[IMAP] 主题: {mail['subject']} | 日期: {mail['date']} → 验证码: {m.group(1)}", flush=True)
+        print(f"[IMAP] {mail['subject']} → 验证码: {m.group(1)}", flush=True)
         return m.group(1)
     return None
 
 
-# ── 浏览器操作辅助 ────────────────────────────────────────
-
-def _js_set_input(selector: str, value: str) -> str:
-    """生成向输入框注入文本的 JS 代码（原型 setter + input/change 事件）。"""
-    escaped = value.replace("'", "\\'")
-    return f"""() => {{
-  const input = document.querySelector('{selector}');
-  if (!input) return {{ok: false, reason: 'no input: {selector}'}};
-  const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
-  setter.call(input, '{escaped}');
-  input.dispatchEvent(new InputEvent('input', {{bubbles: true, data: '{escaped}', inputType: 'insertText'}}));
-  input.dispatchEvent(new Event('change', {{bubbles: true}}));
-  return {{ok: true, value: input.value}};
-}}"""
-
-
-def _js_click_button(text: str) -> str:
-    """生成精确点击指定文本按钮的 JS 代码。"""
-    escaped = text.replace("'", "\\'")
-    return f"""() => {{
-  const btn = Array.from(document.querySelectorAll('[role="button"], button'))
-    .find(el => (el.innerText || '').trim() === '{escaped}');
-  if (!btn) return {{ok: false, found: false}};
-  btn.dispatchEvent(new MouseEvent('click', {{bubbles: true, cancelable: true, view: window}}));
-  return {{ok: true}};
-}}"""
-
-
-def _js_click_button_contains(text: str) -> str:
-    """生成点击包含指定文本按钮的 JS 代码。"""
-    escaped = text.replace("'", "\\'")
-    return f"""() => {{
-  const btn = Array.from(document.querySelectorAll('[role="button"], button'))
-    .find(el => (el.innerText || '').trim().includes('{escaped}'));
-  if (!btn) return {{ok: false, found: false}};
-  btn.dispatchEvent(new MouseEvent('click', {{bubbles: true, cancelable: true, view: window}}));
-  return {{ok: true, clicked: (btn.innerText || '').trim().slice(0, 60)}};
-}}"""
-
-
-def _js_uncheck_marketing() -> str:
-    """生成取消营销勾选框的 JS 代码。"""
-    return """() => {
-  const checkbox = document.querySelector('input[type="checkbox"]');
-  if (!checkbox) return {found: false};
-  const wasChecked = checkbox.checked;
-  if (checkbox.checked) {
-    checkbox.checked = false;
-    checkbox.dispatchEvent(new Event('input', {bubbles: true}));
-    checkbox.dispatchEvent(new Event('change', {bubbles: true}));
-  }
-  return {found: true, wasChecked, nowChecked: checkbox.checked};
-}"""
-
-
-def _js_get_page_state() -> str:
-    """生成读取当前页面 URL 和正文文本的 JS 代码。"""
-    return """() => ({
-  url: location.href,
-  body: document.body.innerText.slice(0, 500)
-})"""
-
-
-# ── env 写入 ─────────────────────────────────────────────
-
-def _parse_cookie_str(cookie_str: str) -> dict[str, str]:
-    """解析 document.cookie 格式的 Cookie 字符串。"""
-    result = {}
-    for pair in cookie_str.split("; "):
-        idx = pair.find("=")
-        if idx > 0:
-            result[pair[:idx]] = urllib.parse.unquote(pair[idx + 1:])
-    return result
-
-
 def _write_env(values: dict[str, str]) -> None:
-    """更新 .env 文件中的关键字段。"""
+    """更新项目根 .env 文件中的关键字段。"""
     try:
         from dotenv import dotenv_values
-        current = dict(dotenv_values(ENV_PATH)) if os.path.exists(ENV_PATH) else {}
+        current = dict(dotenv_values(ENV_PATH)) if ENV_PATH.exists() else {}
     except ImportError:
         current = {}
     current.update(values)
@@ -192,239 +107,506 @@ def _write_env(values: dict[str, str]) -> None:
         f"API_KEY={current.get('API_KEY', 'sk-notion2api')}",
         "",
     ]
-    with open(ENV_PATH, "w", encoding="utf-8") as f:
-        f.write("\n".join(lines))
+    ENV_PATH.write_text("\n".join(lines), encoding="utf-8")
     print(f"[env] 已写入 {ENV_PATH}", flush=True)
 
 
-# ── env 提取 ─────────────────────────────────────────────
+def _account_dir(account_id: str) -> Path:
+    return ACCOUNTS_DIR / account_id
 
-def extract_env_from_browser() -> dict[str, str]:
-    """
-    从当前浏览器页面提取 Notion env 参数。
-    需要页面已登录，且网络请求历史中包含 getSpacesInitial。
 
-    返回：包含所有 env 字段的字典
-    """
-    # 从页面 Cookie 提取
-    js_cookies = """() => {
-      const cookies = {};
-      document.cookie.split('; ').forEach(pair => {
-        const idx = pair.indexOf('=');
-        if (idx > 0) cookies[pair.slice(0, idx)] = pair.slice(idx + 1);
-      });
-      return cookies;
-    }"""
-    cookie_result = evaluate_script(mainWorld=True, function=js_cookies)
-    raw_cookies = cookie_result if isinstance(cookie_result, dict) else {}
+def _read_json(path: Path) -> dict:
+    if not path.exists():
+        return {}
+    return json.loads(path.read_text(encoding="utf-8"))
 
-    def _uc(v):
-        return urllib.parse.unquote(v) if v else ""
 
-    # 从 localStorage 提取 spaceViewId
-    js_ls = """() => {
-      const sv = localStorage.getItem('LRU:KeyValueStore2:lastVisitedRouteSpaceViewId');
-      const si = localStorage.getItem('LRU:KeyValueStore2:lastVisitedRouteSpaceId');
-      if (sv) {
-        try { return {spaceViewId: JSON.parse(sv).value, spaceId: si ? JSON.parse(si).value : null}; } catch(e) {}
+def _write_json(path: Path, data: dict) -> None:
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+
+
+def _js_set_input(selector: str, value: str) -> str:
+    escaped = value.replace("\\", "\\\\").replace("'", "\\'")
+    return f"""() => {{
+  const input = document.querySelector('{selector}');
+  if (!input) return {{ok: false, reason: 'no input: {selector}'}};
+  const setter = Object.getOwnPropertyDescriptor(HTMLInputElement.prototype, 'value').set;
+  setter.call(input, '{escaped}');
+  input.dispatchEvent(new InputEvent('input', {{bubbles: true, data: '{escaped}', inputType: 'insertText'}}));
+  input.dispatchEvent(new Event('change', {{bubbles: true}}));
+  return {{ok: true, value: input.value}};
+}}"""
+
+
+def _js_click_button(text: str) -> str:
+    escaped = text.replace("\\", "\\\\").replace("'", "\\'")
+    return f"""() => {{
+  const buttons = Array.from(document.querySelectorAll('[role="button"], button, input[type="submit"]'));
+  const normalize = value => (value || '').replace(/\\s+/g, ' ').trim();
+  const aliases = {{
+    '继续': ['继续', 'Continue'],
+    '暂时跳过': ['暂时跳过', 'Skip for now'],
+    '创建新工作空间': ['创建新工作空间', 'Create a new workspace'],
+  }};
+  const targets = (aliases['{escaped}'] || ['{escaped}']).map(normalize);
+  const labelOf = el => normalize(el.innerText || el.value || el.getAttribute('aria-label'));
+  const btn = buttons.find(el => targets.includes(labelOf(el)))
+    || buttons.find(el => targets.some(target => labelOf(el).includes(target)));
+  if (!btn) return {{ok: false, found: false, candidates: buttons.slice(0, 20).map(labelOf)}};
+  btn.dispatchEvent(new MouseEvent('click', {{bubbles: true, cancelable: true, view: window}}));
+  return {{ok: true, clicked: labelOf(btn)}};
+}}"""
+
+
+def _js_click_button_contains(text: str) -> str:
+    escaped = text.replace("\\", "\\\\").replace("'", "\\'")
+    return f"""() => {{
+  const btn = Array.from(document.querySelectorAll('[role="button"], button'))
+    .find(el => (el.innerText || '').trim().includes('{escaped}'));
+  if (!btn) return {{ok: false, found: false}};
+  btn.dispatchEvent(new MouseEvent('click', {{bubbles: true, cancelable: true, view: window}}));
+  return {{ok: true, clicked: (btn.innerText || '').trim().slice(0, 60)}};
+}}"""
+
+
+def _js_uncheck_marketing() -> str:
+    return """() => {
+  const checkbox = document.querySelector('input[type="checkbox"]');
+  if (!checkbox) return {found: false};
+  const wasChecked = checkbox.checked;
+  if (checkbox.checked) {
+    checkbox.checked = false;
+    checkbox.dispatchEvent(new Event('input', {bubbles: true}));
+    checkbox.dispatchEvent(new Event('change', {bubbles: true}));
+  }
+  return {found: true, wasChecked, nowChecked: checkbox.checked};
+}"""
+
+
+def _js_get_page_state() -> str:
+    return """() => ({
+  url: location.href,
+  body: document.body.innerText.slice(0, 800)
+})"""
+
+
+def _ensure_ok(result: dict, message: str) -> None:
+    if not isinstance(result, dict) or not result.get("ok"):
+        raise RuntimeError(f"{message}: {result}")
+
+
+def _launch_browser(p, headless: bool):
+    return p.chromium.launch(headless=headless, args=HEADLESS_LAUNCH_ARGS if headless else [])
+
+
+def _new_context(browser, headless: bool, storage_state: str | None = None):
+    kwargs = {"locale": "zh-CN"}
+    if storage_state:
+        kwargs["storage_state"] = storage_state
+    if headless:
+        kwargs["user_agent"] = HEADLESS_USER_AGENT
+    return browser.new_context(**kwargs)
+
+
+def _new_page(context, headless: bool):
+    page = context.new_page()
+    if headless:
+        page.add_init_script(HEADLESS_INIT_SCRIPT)
+    return page
+
+
+def _advance_onboarding(page, account_id: str) -> None:
+    state = page.evaluate(_js_get_page_state())
+    body = state.get("body", "") if isinstance(state, dict) else ""
+
+    if "Customize your profile" in body or "Your name" in body:
+        _ensure_ok(page.evaluate(_js_set_input('input[type="text"]', account_id)), "名字输入失败")
+        page.evaluate(_js_uncheck_marketing())
+        _ensure_ok(page.evaluate(_js_click_button("继续")), "档案页继续失败")
+        time.sleep(SETTLE_SECS)
+
+    if "自定义你的档案" in body or "你的名字" in body:
+        _ensure_ok(page.evaluate(_js_set_input('input[type="text"]', account_id)), "名字输入失败")
+        page.evaluate(_js_uncheck_marketing())
+        _ensure_ok(page.evaluate(_js_click_button("继续")), "档案页继续失败")
+        time.sleep(SETTLE_SECS)
+
+    state = page.evaluate(_js_get_page_state())
+    body = state.get("body", "") if isinstance(state, dict) else ""
+    if "加入团队或创建工作空间" in body:
+        _ensure_ok(page.evaluate(_js_click_button("创建新工作空间")), "创建新工作空间失败")
+        time.sleep(SETTLE_SECS)
+
+    state = page.evaluate(_js_get_page_state())
+    body = state.get("body", "") if isinstance(state, dict) else ""
+    if "你想如何使用 Notion" in body:
+        page.evaluate(_js_uncheck_marketing())
+        _ensure_ok(page.evaluate(_js_click_button_contains("用于私人生活")), "用途选择失败")
+        time.sleep(1)
+        _ensure_ok(page.evaluate(_js_click_button("继续")), "用途页继续失败")
+        time.sleep(SETTLE_SECS)
+
+    state = page.evaluate(_js_get_page_state())
+    body = state.get("body", "") if isinstance(state, dict) else ""
+    if "你的团队中还有谁" in body or "邀请你的团队" in body or "添加更多成员或批量邀请" in body:
+        _ensure_ok(page.evaluate(_js_click_button("继续")), "邀请成员页继续失败")
+        time.sleep(SETTLE_SECS)
+
+    state = page.evaluate(_js_get_page_state())
+    body = state.get("body", "") if isinstance(state, dict) else ""
+    if "选择方案" in body:
+        _ensure_ok(page.evaluate(_js_click_button("继续")), "方案页继续失败")
+        time.sleep(SETTLE_SECS)
+
+    state = page.evaluate(_js_get_page_state())
+    body = state.get("body", "") if isinstance(state, dict) else ""
+    if "暂时跳过" in body:
+        _ensure_ok(page.evaluate(_js_click_button("暂时跳过")), "跳过桌面应用失败")
+        time.sleep(SETTLE_SECS)
+
+
+def _extract_env(page, context) -> dict[str, str]:
+    cookies = {c["name"]: c["value"] for c in context.cookies()}
+
+    time.sleep(3)
+
+    state_data = page.evaluate("""() => {
+      const result = {
+        spaceViewId: null,
+        spaceId: null,
+        pathname: location.pathname,
+        href: location.href,
+        localStorageKeys: Object.keys(localStorage),
+      };
+
+      const normalizeId = (value) => {
+        if (!value || typeof value !== 'string') return null;
+        const clean = value.trim();
+        if (/^[0-9a-f]{32}$/i.test(clean)) {
+          return `${clean.slice(0, 8)}-${clean.slice(8, 12)}-${clean.slice(12, 16)}-${clean.slice(16, 20)}-${clean.slice(20)}`;
+        }
+        if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(clean)) {
+          return clean;
+        }
+        return null;
+      };
+
+      const visit = (value, key = '') => {
+        if (result.spaceId && result.spaceViewId) return;
+        if (typeof value === 'string') {
+          const normalized = normalizeId(value);
+          const lowerKey = key.toLowerCase();
+          if (normalized) {
+            if (!result.spaceViewId && lowerKey.includes('spaceview')) result.spaceViewId = normalized;
+            else if (!result.spaceId && (lowerKey.includes('spaceid') || lowerKey.includes('space_id') || lowerKey.includes('space'))) result.spaceId = normalized;
+          }
+          if (value.startsWith('{') || value.startsWith('[')) {
+            try {
+              visit(JSON.parse(value), key);
+            } catch (e) {}
+          }
+          return;
+        }
+        if (Array.isArray(value)) {
+          for (const item of value) visit(item, key);
+          return;
+        }
+        if (!value || typeof value !== 'object') return;
+        for (const [childKey, childValue] of Object.entries(value)) {
+          const normalized = typeof childValue === 'string' ? normalizeId(childValue) : null;
+          const lowerChildKey = childKey.toLowerCase();
+          if (normalized) {
+            if (!result.spaceViewId && lowerChildKey.includes('spaceview')) result.spaceViewId = normalized;
+            else if (!result.spaceId && (lowerChildKey === 'id' || lowerChildKey.includes('spaceid') || lowerChildKey.includes('space_id') || lowerChildKey === 'space')) result.spaceId = normalized;
+          }
+          visit(childValue, childKey);
+        }
+      };
+
+      const directKeys = [
+        ['LRU:KeyValueStore2:lastVisitedRouteSpaceViewId', 'spaceViewId'],
+        ['LRU:KeyValueStore2:lastVisitedRouteSpaceId', 'spaceId'],
+      ];
+      for (const [key, field] of directKeys) {
+        const raw = localStorage.getItem(key);
+        if (!raw) continue;
+        try {
+          result[field] = normalizeId(JSON.parse(raw).value) || result[field];
+        } catch (e) {}
       }
-      // 备用：从 sidebar state 读取
+
       for (const k of Object.keys(localStorage)) {
-        if (k.includes('notion-sidebar-sidebar-state')) {
-          try {
-            const v = JSON.parse(localStorage.getItem(k));
-            const sv2 = v.value && v.value.spaceViewId;
-            const si2 = v.value && v.value.spaceId;
-            if (sv2) return {spaceViewId: sv2, spaceId: si2};
-          } catch(e) {}
+        const raw = localStorage.getItem(k);
+        if (!raw) continue;
+        visit(raw, k);
+      }
+
+      const stores = [
+        window?.__consoleStore?.getState?.(),
+        window?.store?.getState?.(),
+        window?.notionStore?.getState?.(),
+      ];
+      for (const store of stores) {
+        if (!store) continue;
+        visit(store, 'store');
+        const currentSpace = store.currentSpace;
+        if (currentSpace && !result.spaceId && typeof currentSpace.id === 'string') {
+          result.spaceId = normalizeId(currentSpace.id) || result.spaceId;
+        }
+        if (currentSpace && !result.spaceViewId && typeof currentSpace.spaceViewId === 'string') {
+          result.spaceViewId = normalizeId(currentSpace.spaceViewId) || result.spaceViewId;
         }
       }
-      return {spaceViewId: null, spaceId: null};
-    }"""
-    ls_result = evaluate_script(mainWorld=True, function=js_ls)
-    ls_data = ls_result if isinstance(ls_result, dict) else {}
 
-    # 从网络请求提取 spaceId（备用）
-    space_id = (
-        ls_data.get("spaceId")
-        or _uc(raw_cookies.get("x-notion-space-id", ""))
-    )
+      return result;
+    }""") or {}
 
-    # 从 getSpacesInitial 请求头读取 x-notion-space-id
+    api_space_id = ""
+    api_space_view_id = ""
     try:
-        req_data = list_network_requests(
-            urlFilter="getSpacesInitial", pageSize=3, includePreservedRequests=True
-        )
-        req_text = req_data.get("text", "") if isinstance(req_data, dict) else str(req_data)
-        for line in req_text.splitlines():
-            if "x-notion-space-id:" in line:
-                space_id = space_id or line.split(":", 1)[1].strip()
+        api_data = page.evaluate("""async () => {
+          const calls = [
+            ['/api/v3/getSpacesInitial', {}],
+            ['/api/v3/loadUserContent', {}],
+          ];
+          const results = [];
+          for (const [url, payload] of calls) {
+            try {
+              const resp = await fetch(url, {
+                method: 'POST',
+                headers: {'content-type': 'application/json'},
+                body: JSON.stringify(payload),
+                credentials: 'include'
+              });
+              results.push(await resp.json());
+            } catch (e) {}
+          }
+          return results;
+        }""")
+        if isinstance(api_data, list):
+            for item in api_data:
+                if not isinstance(item, dict):
+                    continue
+                record_map = item.get("recordMap", {})
+                spaces = record_map.get("space", {}) if isinstance(record_map, dict) else {}
+                space_views = record_map.get("space_view", {}) if isinstance(record_map, dict) else {}
+                if not api_space_id and spaces:
+                    api_space_id = next(iter(spaces))
+                if not api_space_view_id and space_views:
+                    api_space_view_id = next(iter(space_views))
+
+                users = item.get("users", {})
+                if isinstance(users, dict):
+                    for user_data in users.values():
+                        if not isinstance(user_data, dict):
+                            continue
+                        user_root = user_data.get("user_root", {})
+                        if not isinstance(user_root, dict):
+                            continue
+                        for root_entry in user_root.values():
+                            value_wrapper = root_entry.get("value", {}) if isinstance(root_entry, dict) else {}
+                            inner_value = value_wrapper.get("value", {}) if isinstance(value_wrapper, dict) else {}
+                            if not api_space_view_id:
+                                space_views_list = inner_value.get("space_views", [])
+                                if isinstance(space_views_list, list) and space_views_list:
+                                    api_space_view_id = space_views_list[0]
+                            if not api_space_id:
+                                pointers = inner_value.get("space_view_pointers", [])
+                                if isinstance(pointers, list):
+                                    for pointer in pointers:
+                                        if isinstance(pointer, dict) and pointer.get("spaceId"):
+                                            api_space_id = pointer.get("spaceId")
+                                            if not api_space_view_id and pointer.get("id"):
+                                                api_space_view_id = pointer.get("id")
+                                            break
     except Exception:
         pass
 
-    token_v2 = _uc(raw_cookies.get("token_v2", ""))
-    p_sync = _uc(raw_cookies.get("p_sync_session", ""))
-    user_id = _uc(raw_cookies.get("notion_user_id", ""))
-    csrf = _uc(raw_cookies.get("csrf", ""))
-    device_id = _uc(raw_cookies.get("device_id", ""))
-    browser_id = _uc(raw_cookies.get("notion_browser_id", ""))
-    space_view_id = ls_data.get("spaceViewId") or ""
+    path_space_id = ""
+    pathname = state_data.get("pathname", "")
+    m = re.search(r"/[a-zA-Z0-9-]+/([0-9a-f]{32})(?:\?|$)", pathname)
+    if m:
+        raw = m.group(1)
+        path_space_id = f"{raw[0:8]}-{raw[8:12]}-{raw[12:16]}-{raw[16:20]}-{raw[20:32]}"
+
+    def _uc(v: str) -> str:
+        return urllib.parse.unquote(v) if v else ""
 
     values = {
-        "NOTION_TOKEN_V2": token_v2,
-        "NOTION_P_SYNC_SESSION": p_sync,
-        "NOTION_SPACE_ID": space_id or "",
-        "NOTION_USER_ID": user_id,
-        "NOTION_SPACE_VIEW_ID": space_view_id,
-        "NOTION_CSRF": csrf,
-        "NOTION_DEVICE_ID": device_id,
-        "NOTION_BROWSER_ID": browser_id,
+        "NOTION_TOKEN_V2": _uc(cookies.get("token_v2", "")),
+        "NOTION_P_SYNC_SESSION": _uc(cookies.get("p_sync_session", "")),
+        "NOTION_SPACE_ID": api_space_id or state_data.get("spaceId") or path_space_id or "",
+        "NOTION_USER_ID": _uc(cookies.get("notion_user_id", "")),
+        "NOTION_SPACE_VIEW_ID": api_space_view_id or state_data.get("spaceViewId") or "",
+        "NOTION_CSRF": _uc(cookies.get("csrf", "")),
+        "NOTION_DEVICE_ID": _uc(cookies.get("device_id", "")),
+        "NOTION_BROWSER_ID": _uc(cookies.get("notion_browser_id", "")),
     }
 
     for k, v in values.items():
         status = "✓" if v else "✗"
         print(f"  {status} {k}: {v[:40]}{'...' if len(v) > 40 else ''}", flush=True)
-
     return values
 
 
-# ── 主流程 ────────────────────────────────────────────────
+def _save_account(account_id: str, email_addr: str, values: dict[str, str], context) -> None:
+    account_dir = _account_dir(account_id)
+    account_dir.mkdir(parents=True, exist_ok=True)
 
-def register_and_extract_env() -> dict[str, str]:
-    """
-    完整自动注册 + env 提取流程。
+    state_path = account_dir / "state.json"
+    env_path = account_dir / "env.json"
+    meta_path = account_dir / "meta.json"
 
-    返回：提取到的 env 字段字典
-    """
+    context.storage_state(path=str(state_path))
+    _write_json(env_path, values)
+
+    old_meta = _read_json(meta_path)
+    meta = {
+        "account_id": account_id,
+        "email": email_addr,
+        "user_id": values.get("NOTION_USER_ID", ""),
+        "space_id": values.get("NOTION_SPACE_ID", ""),
+        "space_view_id": values.get("NOTION_SPACE_VIEW_ID", ""),
+        "created_at": old_meta.get("created_at") or datetime.now().isoformat(),
+        "updated_at": datetime.now().isoformat(),
+    }
+    _write_json(meta_path, meta)
+    print(f"[account] 已保存账号目录: {account_dir}", flush=True)
+
+
+def _run_register(export_root: bool, headless: bool) -> None:
     ts = str(int(time.time()))
     email_addr = f"posase{ts}@pid.im"
-    username = f"posase{ts}"
+    account_id = f"posase{ts}"
     print(f"[注册] 邮箱: {email_addr}", flush=True)
 
-    # 1. 打开注册页
-    print("[注册] 打开注册页...", flush=True)
-    new_page(url=SIGNUP_URL)
-    time.sleep(PAGE_SETTLE_SECS)
+    with sync_playwright() as p:
+        browser = _launch_browser(p, headless)
+        context = _new_context(browser, headless)
+        page = _new_page(context, headless)
+        page.goto(SIGNUP_URL, wait_until="domcontentloaded")
+        time.sleep(SETTLE_SECS)
 
-    # 2. 输入邮箱
-    print("[注册] 输入邮箱...", flush=True)
-    result = evaluate_script(mainWorld=True, function=_js_set_input('input[type="email"]', email_addr))
-    if not (isinstance(result, dict) and result.get("ok")):
-        raise RuntimeError(f"邮箱输入失败: {result}")
-
-    # 3. 点继续，触发 OTP 发送；记录发送时间用于过滤历史邮件
-    print("[注册] 点击继续，触发验证码发送...", flush=True)
-    time.sleep(1)
-    otp_sent_at = time.time()
-    result = evaluate_script(mainWorld=True, function=_js_click_button("继续"))
-    if not (isinstance(result, dict) and result.get("ok")):
-        raise RuntimeError(f"继续按钮点击失败: {result}")
-
-    # 4. 等待验证码（只接受 sent_after 之后到达的邮件，过滤历史旧码）
-    otp = fetch_notion_otp(to_addr=email_addr, sent_after=otp_sent_at, timeout=OTP_WAIT_SECS)
-    if not otp:
-        raise RuntimeError("超时：未收到 Notion 验证码邮件")
-    print(f"[注册] 收到验证码: {otp}", flush=True)
-
-    # 6. 输入验证码
-    print("[注册] 输入验证码...", flush=True)
-    time.sleep(2)
-    result = evaluate_script(mainWorld=True, function=_js_set_input('input[placeholder="输入验证码"]', otp))
-    if not (isinstance(result, dict) and result.get("ok")):
-        # 备用选择器
-        result = evaluate_script(mainWorld=True, function=_js_set_input('input[type="text"]', otp))
-    if not (isinstance(result, dict) and result.get("ok")):
-        raise RuntimeError(f"验证码输入失败: {result}")
-
-    result = evaluate_script(mainWorld=True, function=_js_click_button("继续"))
-    if not (isinstance(result, dict) and result.get("ok")):
-        raise RuntimeError(f"验证码提交失败: {result}")
-
-    # 7. 等待 onboarding 页加载
-    print("[注册] 等待 onboarding 档案页...", flush=True)
-    time.sleep(PAGE_SETTLE_SECS)
-
-    state = evaluate_script(mainWorld=True, function=_js_get_page_state())
-    print(f"[注册] 当前页面: {state.get('url') if isinstance(state, dict) else state}", flush=True)
-
-    # 8. 档案页：填名字 + 取消营销勾选
-    if "onboarding" in (state.get("url", "") if isinstance(state, dict) else ""):
-        body_text = state.get("body", "") if isinstance(state, dict) else ""
-        if "自定义你的档案" in body_text or "你的名字" in body_text:
-            print("[注册] 档案页：填写名字...", flush=True)
-            result = evaluate_script(mainWorld=True, function=_js_set_input('input[type="text"]', username))
-            if not (isinstance(result, dict) and result.get("ok")):
-                # 名字冲突时使用随机后缀
-                import random, string
-                rand_suffix = "".join(random.choices(string.ascii_lowercase, k=4))
-                username_alt = f"posase{rand_suffix}"
-                evaluate_script(mainWorld=True, function=_js_set_input('input[type="text"]', username_alt))
-                print(f"[注册] 名字冲突，改用: {username_alt}", flush=True)
-
-            print("[注册] 取消营销勾选...", flush=True)
-            evaluate_script(mainWorld=True, function=_js_uncheck_marketing())
-
-            evaluate_script(mainWorld=True, function=_js_click_button("继续"))
-            time.sleep(PAGE_SETTLE_SECS)
-
-    # 9. 团队/工作空间页：创建新工作空间
-    state = evaluate_script(mainWorld=True, function=_js_get_page_state())
-    body_text = state.get("body", "") if isinstance(state, dict) else ""
-    if "加入团队或创建工作空间" in body_text:
-        print("[注册] 工作空间页：点击创建新工作空间...", flush=True)
-        result = evaluate_script(mainWorld=True, function=_js_click_button("创建新工作空间"))
-        if not (isinstance(result, dict) and result.get("ok")):
-            raise RuntimeError("创建新工作空间按钮点击失败")
-        time.sleep(PAGE_SETTLE_SECS)
-
-    # 10. 用途页：选"用于私人生活" + 取消营销勾选 + 继续
-    state = evaluate_script(mainWorld=True, function=_js_get_page_state())
-    body_text = state.get("body", "") if isinstance(state, dict) else ""
-    if "你想如何使用 Notion" in body_text:
-        print("[注册] 用途页：选择私人生活...", flush=True)
-        evaluate_script(mainWorld=True, function=_js_uncheck_marketing())
-        result = evaluate_script(mainWorld=True, function=_js_click_button_contains("用于私人生活"))
-        print(f"[注册] 点击结果: {result}", flush=True)
+        _ensure_ok(page.evaluate(_js_set_input('input[type="email"]', email_addr)), "邮箱输入失败")
         time.sleep(1)
-        evaluate_script(mainWorld=True, function=_js_click_button("继续"))
-        time.sleep(PAGE_SETTLE_SECS)
 
-    # 11. 桌面应用引导：暂时跳过
-    state = evaluate_script(mainWorld=True, function=_js_get_page_state())
-    body_text = state.get("body", "") if isinstance(state, dict) else ""
-    if "暂时跳过" in body_text:
-        print("[注册] 桌面应用引导：暂时跳过...", flush=True)
-        evaluate_script(mainWorld=True, function=_js_click_button("暂时跳过"))
-        time.sleep(PAGE_SETTLE_SECS)
+        otp_sent_at = time.time()
+        _ensure_ok(page.evaluate(_js_click_button("继续")), "继续按钮点击失败")
+        time.sleep(8)
 
-    # 12. 等待主页完全加载
-    print("[注册] 等待主页加载...", flush=True)
-    time.sleep(5)
+        otp = fetch_notion_otp(email_addr, otp_sent_at)
+        if not otp:
+            raise RuntimeError("超时：未收到 Notion 验证码邮件")
+        print(f"[注册] 验证码: {otp}", flush=True)
 
-    state = evaluate_script(mainWorld=True, function=_js_get_page_state())
-    print(f"[注册] 最终页面: {state.get('url') if isinstance(state, dict) else state}", flush=True)
+        time.sleep(2)
+        result = page.evaluate(_js_set_input('input[placeholder="输入验证码"]', otp))
+        if not isinstance(result, dict) or not result.get("ok"):
+            _ensure_ok(page.evaluate(_js_set_input('input[type="text"]', otp)), "验证码输入失败")
 
-    # 13. 提取 env
-    print("[注册] 提取 env 参数...", flush=True)
-    values = extract_env_from_browser()
+        _ensure_ok(page.evaluate(_js_click_button("继续")), "验证码提交失败")
+        time.sleep(SETTLE_SECS)
+
+        _advance_onboarding(page, account_id)
+
+        page.goto(HOME_URL, wait_until="domcontentloaded")
+        time.sleep(5)
+
+        values = _extract_env(page, context)
+        _save_account(account_id, email_addr, values, context)
+        browser.close()
+
+    _run_refresh(account_id=account_id, export_root=export_root, headless=headless)
+
+
+def _run_refresh(account_id: str, export_root: bool, headless: bool) -> None:
+    account_dir = _account_dir(account_id)
+    state_path = account_dir / "state.json"
+    meta_path = account_dir / "meta.json"
+    if not state_path.exists():
+        raise RuntimeError(f"账号不存在或缺少状态文件: {state_path}")
+
+    meta = _read_json(meta_path)
+    email_addr = meta.get("email", account_id)
+    print(f"[refresh] 账号: {account_id} ({email_addr})", flush=True)
+
+    with sync_playwright() as p:
+        browser = _launch_browser(p, headless)
+        context = _new_context(browser, headless, storage_state=str(state_path))
+        page = _new_page(context, headless)
+        page.goto(HOME_URL, wait_until="domcontentloaded")
+        time.sleep(5)
+        _advance_onboarding(page, account_id)
+
+        values = _extract_env(page, context)
+        _save_account(account_id, email_addr, values, context)
+        if export_root:
+            _write_env(values)
+
+        browser.close()
+
+
+def _run_export(account_id: str) -> None:
+    env_path = _account_dir(account_id) / "env.json"
+    if not env_path.exists():
+        raise RuntimeError(f"账号不存在或缺少 env 文件: {env_path}")
+    values = _read_json(env_path)
     _write_env(values)
-    return values
+    print(f"[export] 已导出账号 {account_id} 到项目根 .env", flush=True)
 
 
-def env_only() -> dict[str, str]:
-    """仅从当前浏览器页面提取 env，跳过注册流程。"""
-    print("[env-only] 从当前浏览器页面提取 env...", flush=True)
-    values = extract_env_from_browser()
-    _write_env(values)
-    return values
+def _run_list() -> None:
+    if not ACCOUNTS_DIR.exists():
+        print("[list] 暂无账号", flush=True)
+        return
+
+    found = False
+    for account_dir in sorted(ACCOUNTS_DIR.iterdir()):
+        if not account_dir.is_dir():
+            continue
+        meta = _read_json(account_dir / "meta.json")
+        print(
+            f"- account={account_dir.name} | email={meta.get('email', '')} | "
+            f"user_id={meta.get('user_id', '')} | space_id={meta.get('space_id', '')} | "
+            f"updated_at={meta.get('updated_at', '')}",
+            flush=True,
+        )
+        found = True
+    if not found:
+        print("[list] 暂无账号", flush=True)
+
+
+def main() -> None:
+    ACCOUNTS_DIR.mkdir(parents=True, exist_ok=True)
+
+    parser = argparse.ArgumentParser(description="Notion 账号自动注册 + 多账号 env 管理（Playwright）")
+    subparsers = parser.add_subparsers(dest="command", required=True)
+
+    register_parser = subparsers.add_parser("register", help="注册一个新账号")
+    register_parser.add_argument("--export", action="store_true", help="注册完成后导出到项目根 .env")
+    register_parser.add_argument("--headless", action="store_true", help="使用无头浏览器运行，适合 Linux 服务器")
+
+    refresh_parser = subparsers.add_parser("refresh", help="刷新指定账号的 env")
+    refresh_parser.add_argument("--account", required=True, help="账号 ID")
+    refresh_parser.add_argument("--export", action="store_true", help="刷新完成后导出到项目根 .env")
+    refresh_parser.add_argument("--headless", action="store_true", help="使用无头浏览器运行，适合 Linux 服务器")
+
+    export_parser = subparsers.add_parser("export", help="导出指定账号到项目根 .env")
+    export_parser.add_argument("--account", required=True, help="账号 ID")
+
+    subparsers.add_parser("list", help="列出已有账号")
+
+    args = parser.parse_args()
+
+    if args.command == "register":
+        _run_register(export_root=args.export, headless=args.headless)
+    elif args.command == "refresh":
+        _run_refresh(account_id=args.account, export_root=args.export, headless=args.headless)
+    elif args.command == "export":
+        _run_export(account_id=args.account)
+    elif args.command == "list":
+        _run_list()
 
 
 if __name__ == "__main__":
-    if not MCP_AVAILABLE:
-        print("错误：此脚本需要在 Claude Code MCP 上下文中运行，MCP 工具不可用。", file=sys.stderr)
-        sys.exit(1)
-
-    if len(sys.argv) > 1 and sys.argv[1] == "--env-only":
-        env_only()
-    else:
-        register_and_extract_env()
+    main()
