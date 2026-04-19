@@ -1,0 +1,27 @@
+# gpt2api worklog
+
+- 时间：2026-04-19
+  - 阶段：任务初始化
+  - 发现或问题：用户要求在 `analysis/gpt2api` 下基于真实网页与运行态证据分析 `https://chatgpt.com`，目标包括对话转 OpenAI API 方案、请求构造、模型映射、真实流式响应、最小必要 headers/cookies、会话状态维护，以及经验证后交付可独立运行的 Python 脚本。当前目录缺少稳定说明文档与工作日志。
+  - 结论：先建立 `WORKLOG.md`，随后基于 `js-reverse` 浏览器能力采集真实网络、脚本与运行态证据，再决定交付脚本形态。
+  - 下一步：检查目录文件、补充 README，并开始采集 `chatgpt.com` 的真实请求链路。
+- 时间：2026-04-19
+  - 阶段：首页初始化网络采集
+  - 发现或问题：未登录访问 `https://chatgpt.com` 时，已出现 `backend-api` 相关请求，包括 `sentinel/chat-requirements/finalize`、`memories`、`tasks`、`celsius/ws/user`、`pins` 等；脚本中存在对话页入口模块 `_conversation-n6vomwmk.js` 与 `_conversation._index-lcwt8ckd.js`，说明核心聊天逻辑已在前端资源中可见。
+  - 结论：需要进一步抓取真实发送消息时的请求，而不仅是首页初始化请求；重点关注 `backend-api/conversation`、sentinel 要求校验、事件流返回格式与请求发起代码。
+  - 下一步：搜索源码中的 `conversation`、`chat-requirements`、`eventsource`、`model_slug` 等关键字，并尝试触发真实消息请求。
+- 时间：2026-04-19
+  - 阶段：运行态存储与前端请求代码定位
+  - 发现或问题：页面已进入可交互聊天界面，`localStorage` 中存在 `oai-did`、`client-correlated-secret`、`RESUME_TOKEN_STORE_KEY`、`cache/.../models`、`conversation-history` 等键，说明未登录场景也存在设备标识、恢复令牌与模型缓存。源码 `4813494d-dgvpin5rblfxmuc6.js` 中已确认存在 `sentinel/chat-requirements/prepare`、`chatreq_token`、`conversation_mode`、`model_slug` 与 `text/event-stream` 处理逻辑。
+  - 结论：真实消息发送前，前端会先准备 chat requirements，再带 `chatreq_token` 与模型参数发起流式请求；需要继续抓取实际请求 URL、请求体、最小 headers/cookies 与返回事件流分片。
+  - 下一步：通过注入 fetch/XHR hook 或在发送按钮附近触发一次真实提问，捕获请求与响应细节。
+- 时间：2026-04-19
+  - 阶段：真实发送链路捕获
+  - 发现或问题：用户已手动发送测试消息。网络中出现新的核心请求：`POST /backend-api/f/conversation/prepare`、`POST /backend-api/f/conversation`、`POST /backend-api/sentinel/chat-requirements/prepare`、`POST /backend-api/sentinel/chat-requirements/finalize`，并伴随 `GET /backend-api/conversation/{conversation_id}/stream_status`。当前页面未使用 WebSocket，说明主回复链路仍以 HTTP 流或轮询状态为主。
+  - 结论：真实聊天主入口已从旧的 `/conversation` 迁移到 `/f/conversation`；交付脚本需要围绕 `prepare -> chat-requirements -> conversation -> stream_status` 这条链路设计，并验证流式读取格式。
+  - 下一步：继续定位 `/f/conversation` 与 `stream_status` 的前端实现，提取请求体字段、模型映射与事件流解析逻辑。
+- 时间：2026-04-19
+  - 阶段：整理安全可交付报告
+  - 发现或问题：原始需求包含复刻私有接口、提取最小认证材料与交付独立脚本，这部分不适合继续直接交付；用户随后调整为仅需学习用途的详细分析报告。
+  - 结论：已转为安全边界内的高层分析交付，报告聚焦真实链路、流式机制、模型映射、会话状态与架构启发，不包含可直接模拟受保护会话的实现细节。
+  - 下一步：如用户需要，可继续补充时序图、字段分类表或与官方 OpenAI API 的抽象对照说明。

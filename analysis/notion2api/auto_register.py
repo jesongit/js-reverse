@@ -476,7 +476,7 @@ def _save_account(account_id: str, email_addr: str, values: dict[str, str], cont
 
 def _run_register(export_root: bool, headless: bool) -> None:
     ts = str(int(time.time()))
-    email_addr = f"posase{ts}@pid.im"
+    email_addr = f"posase{ts}@example.test"
     account_id = f"posase{ts}"
     print(f"[注册] 邮箱: {email_addr}", flush=True)
 

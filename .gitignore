@@ -19,7 +19,7 @@ out/
 .env.test.local
 .env.production.local
 .env.*.local
-projects/notion2api/accounts/
+accounts/
 
 # IDE
 .vscode/

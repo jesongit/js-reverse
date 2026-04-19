@@ -1,0 +1,653 @@
+[
+  {
+    "model": "turbo",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-Zdj8kVTBTZKTGbB6azSxQQ",
+    "entry_uuid": "65d8fc91-54c1-4d92-9319-b07a6b34b141",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "pplx_pro_upgraded",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-GZi5mW6sQ22.0mRITea70g",
+    "entry_uuid": "1998b999-6eac-436d-bed2-64484de6bbd2",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "pplx_pro",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-XhxlK7xnSW.AfXV7xKXjeA",
+    "entry_uuid": "5e1c652b-bc67-496f-807d-757bc4a5e378",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "experimental",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-byHH5MAgTRqfzQkC_TYKsw",
+    "entry_uuid": "6f21c7e4-c020-4d1a-9fcd-0902fd360ab3",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "pplx_reasoning",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-79HsuOE4TXS8u3h26tQU5g",
+    "entry_uuid": "efd1ecb8-e138-4d74-bcbb-7876ead414e6",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "pplx_sonar_internal_testing",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-IyJpXAZ6Q_e6ib.aZ3NOfg",
+    "entry_uuid": "2322695c-067a-43f7-ba89-bf9a67734e7e",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "pplx_sonar_internal_testing_v2",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-42lJwvyASWS.o8vGx8jugw",
+    "entry_uuid": "e36949c2-fc80-4964-bea3-cbc6c7c8ee83",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "pplx_study",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-y65pswK.TSe1EZVQqQqzqg",
+    "entry_uuid": "cbae69b3-02be-4d27-b511-9550a90ab3aa",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "pplx_document_review",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-2Edt3M5YTumHMEY8NuZifA",
+    "entry_uuid": "d8476ddc-ce58-4ee9-8730-463c36e6627c",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "pplx_agentic_research",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-TCbRLXicRCGCMX1OvXtHNA",
+    "entry_uuid": "4c26d12d-789c-4421-8231-7d4ebd7b4734",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "pplx_alpha",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-vJEA7MHbSCG_2ozjUTldzA",
+    "entry_uuid": "bc9100ec-c1db-4821-bfda-8ce351395dcc",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "pplx_beta",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-78GHdXUDSOavSVG.xL6OFg",
+    "entry_uuid": "efc18775-7503-48e6-af49-51bec4be8e16",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "pplx_business_assistant",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-NZJsGEPqRkCxhm55.Weciw",
+    "entry_uuid": "35926c18-43ea-4640-b186-6e79f9679c8b",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "sonar",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-1ZOgaujtSNGtx.fdxACOnA",
+    "entry_uuid": "d593a06a-e8ed-48d1-adc7-e7ddc4008e9c",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "gpt4o",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-n5vhprS.TlSN8huLskcqIA",
+    "entry_uuid": "9f9be1a6-b4be-4e54-8df2-1b8bb2472a20",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "gpt4.1",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-hO1vj8OMTSGdl2BCPS8Z5g",
+    "entry_uuid": "84ed6f8f-c38c-4d21-9d97-60423d2f19e6",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "gpt41",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-1MF.QCZmTp.SVh4q0_3o1g",
+    "entry_uuid": "d4c17e40-2666-4e9f-9256-1e2ad3fde8d6",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "gpt51",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-4Z3DH4ehRTGoLedDTz47Vg",
+    "entry_uuid": "e19dc31f-87a1-4531-a82d-e7434f3e3b56",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "gpt52",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-5zpW9rFlQGKZzfUO8k._2A",
+    "entry_uuid": "e73a56f6-b165-4062-99cd-f50ef24fbfd8",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "gpt54",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-NqGlKUWSQoidPU8R94x8bw",
+    "entry_uuid": "36a1a529-4592-4288-9d3d-4f11f78c7c6f",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "gpt54mini",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-KHlhaSRoQjqTB8dkZ2kqIQ",
+    "entry_uuid": "28796169-2468-423a-9307-c76467692a21",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "gpt53codex",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-OTZq3l6oTom7UnkhTdFrYw",
+    "entry_uuid": "39366ade-5ea8-4e89-bb52-79214dd16b63",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "gpt51_thinking",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-sh80SXPBSde19E59DnK6cw",
+    "entry_uuid": "b21f3449-73c1-49d7-b5f4-4e7d0e72ba73",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "gpt52_thinking",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-Oyyt2ICqQWucs2G9X9YXbA",
+    "entry_uuid": "3b2cadd8-80aa-416b-9cb3-61bd5fd6176c",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "gpt54_thinking",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-qYP3Nx7rQsq_w5i36gCJFA",
+    "entry_uuid": "a983f737-1eeb-42ca-bfc3-98b7ea008914",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "gpt5",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-xraegoQNSvCgkwoXCcankQ",
+    "entry_uuid": "c6b69e82-840d-4af0-a093-0a1709c6a791",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "gpt5_thinking",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-iPxdTfhtQg.B7ZAwDJdxoA",
+    "entry_uuid": "88fc5d4d-f86d-420f-81ed-90300c9771a0",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "gpt5_pro",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-gc2DUn.nSWSq6hTNY7vWqA",
+    "entry_uuid": "81cd8352-7fa7-4964-aaea-14cd63bbd6a8",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "o4mini",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-rbUTajhATHW9JHMi6sLnzA",
+    "entry_uuid": "adb5136a-3840-4c75-bd24-7322eac2e7cc",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "o3",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-i5Ohk0YSQv2AVQxt1PaqsQ",
+    "entry_uuid": "8b93a193-4612-42fd-8055-0c6dd4f6aab1",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "o3-mini",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-aOd_8W6CRN.FJq.LvG9Icw",
+    "entry_uuid": "68e77ff1-6e82-44df-8526-af8bbc6f4873",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "o3mini",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-MsxKH7.TREiYZ1K7yaoXbQ",
+    "entry_uuid": "32cc4a1f-bf93-4448-9867-52bbc9aa176d",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "o3pro",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-s8o6C_IWSbSLl33YrLXW8A",
+    "entry_uuid": "b3ca3a0b-f216-49b4-8b97-7dd8acb5d6f0",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "o3pro_research",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-CHX.9GfnT5m2SRTJwSswXw",
+    "entry_uuid": "0875fef4-67e7-4f99-b649-14c9c12b305f",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "o3pro_labs",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-OQoAM5UYT_C5Sv32KMmpHw",
+    "entry_uuid": "390a0033-9518-4ff0-b94a-fdf628c9a91f",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "o3_research",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-lzh0xrDwQWSsCQlvJAK3Pg",
+    "entry_uuid": "973874c6-b0f0-4164-ac09-096f2402b73e",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "o3_labs",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-25PVd8w6TjGH0rp8BCI_ig",
+    "entry_uuid": "db93d577-cc3a-4e31-87d2-ba7c04223f8a",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "codex",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-Q0vuL3hWQVqDjIZ4HYYbHw",
+    "entry_uuid": "434bee2f-7856-415a-838c-86781d861b1f",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "claude2",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-vEjCQ2oZSrOT6t4nZR4Q0A",
+    "entry_uuid": "bc48c243-6a19-4ab3-93ea-de27651e10d0",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "claude37sonnetthinking",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-a.gZkm8pRBiDN5PJOAZV4g",
+    "entry_uuid": "6be81992-6f29-4418-8337-93c9380655e2",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "claude40opus",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-zv.7EGi9REadGFrDhJDK3A",
+    "entry_uuid": "ceffbb10-68bd-4446-9d18-5ac38490cadc",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "claude41opus",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-dCFpLXBkScioSzmhsg2Mcg",
+    "entry_uuid": "7421692d-7064-49c8-a84b-39a1b20d8c72",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "claude40opusthinking",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-lQHIVNlgRDCRAgs4iNuT3A",
+    "entry_uuid": "9501c854-d960-4430-9102-0b3888db93dc",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "claude41opusthinking",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-FCcZuDm1SBSETUR.6K27YA",
+    "entry_uuid": "142719b8-39b5-4814-844d-447ee8adbb60",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "claude46opus",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-Jqs4NSIrQ1uatqFXaRdz8A",
+    "entry_uuid": "26ab3835-222b-435b-9ab6-a157691773f0",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "claude46opusthinking",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-1ZUHMswQTBCkTcaJE2nnqA",
+    "entry_uuid": "d5950732-cc10-4c10-a44d-c6891369e7a8",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "claude46sonnet",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-0UQyAqVoSryxslAWgYgBFA",
+    "entry_uuid": "d1443202-a568-4abc-b1b2-501681880114",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "claude46sonnetthinking",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-i5.U5.xVQhCVf.tnDzuN2A",
+    "entry_uuid": "8b9f94e7-ec55-4210-957f-eb670f3b8dd8",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "claude45haiku",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-hAlIeWUyTymAH_hLKsixJg",
+    "entry_uuid": "84094879-6532-4f29-801f-f84b2ac8b126",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "claude45sonnet",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-R32XcQRXSaaJA3gGDYxoqg",
+    "entry_uuid": "477d9771-0457-49a6-8903-78060d8c68aa",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "claude45sonnetthinking",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-D5dbdNaLTquJCAsexZJD0w",
+    "entry_uuid": "0f975b74-d68b-4eab-8908-0b1ec59243d3",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "claude45opus",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-XnKK6tfHRXKhbcTRgLFtpw",
+    "entry_uuid": "5e728aea-d7c7-4572-a16d-c4d180b16da7",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "claude45opusthinking",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-98e3K_uVQfScW1d7F_y4rQ",
+    "entry_uuid": "f7c7b72b-fb95-41f4-9c5b-577b17fcb8ad",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "claudecode",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-unUHh72SQPmfZWxFQAe1mQ",
+    "entry_uuid": "ba750787-bd92-40f9-9f65-6c454007b599",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "gemini25pro",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-RE3b2rMTQvWVFMwP9D6wZg",
+    "entry_uuid": "444ddbda-b313-42f5-9514-cc0ff43eb066",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "gemini31pro_high",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-5ewQXctmTRKiIw3r7quw8Q",
+    "entry_uuid": "e5ec105d-cb66-4d12-a223-0debeeabb0f1",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "gemini30flash",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-RRN4shVSQWaGxAawh8uvxQ",
+    "entry_uuid": "451378b2-1552-4166-86c4-06b087cbafc5",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "gemini30flash_high",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-zoN3C.szQ9uzGTUCzCov5g",
+    "entry_uuid": "ce83770b-eb33-43db-b319-3502cc2a2fe6",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "gemini",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-bE1HoapQQZ.UXoSBfrQHVA",
+    "entry_uuid": "6c4d47a1-aa50-419f-945e-84817eb40754",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "gemini2flash",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-42qF6t0GQhyfO3ZVyoeRHw",
+    "entry_uuid": "e36a85ea-dd06-421c-9f3b-7655ca87911f",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "gemini30pro",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-ncE2tbNqR3Ko4qpDX0ZzLA",
+    "entry_uuid": "9dc136b5-b36a-4772-a8e2-aa435f46732c",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "grok",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-VIaUtFcATdS9bxt4oaMR6Q",
+    "entry_uuid": "548694b4-5700-4dd4-bd6f-1b78a1a311e9",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "grok2",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-xcZmp36tSUWzI5bv_n.tqA",
+    "entry_uuid": "c5c666a7-7ead-4945-b323-96effe7fada8",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "grok4",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-72AoAf2fS.mDSvHA_cIUZQ",
+    "entry_uuid": "ef602801-fd9f-4be9-834a-f1c0fdc21465",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "grok4nonthinking",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-7WnMalxkTZGElphnT4YJgg",
+    "entry_uuid": "ed69cc6a-5c64-4d91-8496-98674f860982",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "grok41reasoning",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-b1TOub8_SDWz_UJWdmZs0g",
+    "entry_uuid": "6f54ceb9-bf3f-4835-b3fd-425676666cd2",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "grok41nonreasoning",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-kp.EakQxTZSUI.Qlip6Pbg",
+    "entry_uuid": "929f846a-4431-4d94-9423-e4258a9e8f6e",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "kimik25thinking",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-jnijw1O8TPi.pRGozl0oAw",
+    "entry_uuid": "8e78a3c3-53bc-4cf8-bea5-11a8ce5d2803",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "kimik2thinking",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-9TcxvGaBQnuBJFT2NgjbtA",
+    "entry_uuid": "f53731bc-6681-427b-8124-54f63608dbb4",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "pplx_asi_kimi",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-eYwqj7wxSDKGAQDofJEjGA",
+    "entry_uuid": "798c2a8f-bc31-4832-8601-00e87c912318",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "r1",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-JzPYp11ERDGxxgMH2HqMDA",
+    "entry_uuid": "2733d8a7-5d44-4431-b1c6-0307d87a8c0c",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "r1_1776",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-2yF4SJ4uQzWQrkdsEEq0Jw",
+    "entry_uuid": "db217848-9e2e-4335-90ae-476c104ab427",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "llama_x_large",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-PNO2Bp.9Sx.qYooP_yVo_g",
+    "entry_uuid": "3cd3b606-9fbd-4b1f-aa62-8a0fff2568fe",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "mistral",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-GzlaavbvRNOgksgy1cl2cw",
+    "entry_uuid": "1b395a6a-f6ef-44d3-a092-c832d5c97673",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "pplx_gamma",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-YSgNyVYbQFClvDgjSonevA",
+    "entry_uuid": "61280dc9-561b-4050-a5bc-38234a89debc",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "testing_model_c",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-FcRFwDLzS0iYVyIxnEWdtA",
+    "entry_uuid": "15c445c0-32f3-4b48-9857-22319c459db4",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "claude_ombre_eap",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-jJzn7QBTTlOP6SWaFnnE3Q",
+    "entry_uuid": "8c9ce7ed-0053-4e53-8fe9-259a1679c4dd",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "claude_lace_eap",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-ox3UMtVXT4mwoQGW0VTMkg",
+    "entry_uuid": "a31dd432-d557-4f89-b0a1-0196d154cc92",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "pplx_asi_qwen",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-XTgyMFrFRhK7DLa4C3yipw",
+    "entry_uuid": "5d383230-5ac5-4612-bb0c-b6b80b7ca2a7",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "pplx_asi_sonnet",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-BDOQpTE3S.6xK4gm2Q1bbw",
+    "entry_uuid": "043390a5-3137-4bee-b12b-8826d90d5b6f",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "pplx_asi_sonnet_thinking",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-linUEdMIQXaMCOFhtHru0g",
+    "entry_uuid": "9629d411-d308-4176-8c08-e161b47aeed2",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "pplx_asi_gpt54",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-TTZjhXCPQ9G8nLMcIXtaug",
+    "entry_uuid": "4d366385-708f-43d1-bc9c-b31c217b5aba",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "pplx_asi_opus",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-CeZrmQx_TSOZ3END5QbC1g",
+    "entry_uuid": "09e66b99-0c7f-4d23-99dc-4343e506c2d6",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "pplx_asi_opus_thinking",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-MlEKKW_8T_uonq.LvZl5JA",
+    "entry_uuid": "32510a29-6ffc-4ffb-a89e-af8bbd997924",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "pplx_asi_beta",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-6nmXG0fXS2aHgL8xT9YfAw",
+    "entry_uuid": "ea79971b-47d7-4b66-8780-bf314fd61f03",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "pplx_asi",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-FakV4MvGReWE735nuBqw5Q",
+    "entry_uuid": "15a915e0-cbc6-45e5-84ef-7e67b81ab0e5",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "nanobananapro",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-RJS90T4ZQ02vBRCKXE.SgQ",
+    "entry_uuid": "4494bdd1-3e19-434d-af05-108a5c4f9281",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "nanobanana2",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-WBkOYjzBTWSIlbUICbAX3g",
+    "entry_uuid": "58190e62-3cc1-4d64-8895-b50809b017de",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "gptimage15",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-xuYu9R.0SJ6WFESDeEG2Tg",
+    "entry_uuid": "c6e62ef5-1fb4-489e-9614-44837841b64e",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "sora2",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-OE5rIR9DSl6Q7BWlGK9SwA",
+    "entry_uuid": "384e6b21-1f43-4a5e-90ec-15a518af52c0",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "sora2pro",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-b4SEMB7TTQ.Ytg63NgGyxg",
+    "entry_uuid": "6f848430-1ed3-4d0f-98b6-0eb73601b2c6",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "veo31",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-G3q7hDr9QDubzDovi74QOg",
+    "entry_uuid": "1b7abb84-3afd-403b-9bcc-3a2f8bbe103a",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  },
+  {
+    "model": "veo31fast",
+    "ok": true,
+    "thread_slug": "qing-zhi-hui-fu-ok-DQc0iHxrSa2Tdc_tMca7iQ",
+    "entry_uuid": "0d073488-7c6b-49ad-9375-cfed31c6bb89",
+    "preview": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u8bf7\\u53ea\\u56de\\u590d OK\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"OK\\\", \\"
+  }
+]

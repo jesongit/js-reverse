@@ -161,7 +161,23 @@
 | 反模式预警 | `03-topics/anti-patterns.md` |
 | 瑞数风控系统 | `04-rs/` 系列文件 |
 | 需要从真实请求抓 Cookie / header / body 回填本地配置 | `05-project/notion-env-capture-pattern.md` |
+| 需要处理登录态、多源 env、初始化接口、空间上下文联合恢复 | `05-project/notion-live-evidence-and-multi-source-env.md` |
 | 需要明确独立运行交付优先级 | `05-project/independent-delivery-priority.md` |
+| 需要把网页 AI 对话链路封装成 OpenAI 兼容接口 | `05-project/notion-env-capture-pattern.md`、`05-project/independent-delivery-priority.md` |
+
+### AI 对话站点专项规则
+
+遇到 Perplexity、Notion AI、Chat 类网页对话站点时，额外执行以下检查：
+
+1. 先确认真实主链路是 `fetch + SSE`、普通 XHR、WebSocket，还是混合模式，禁止先入为主按 WebSocket 处理。
+2. 必须区分“发起对话”与“读取线程详情 / 历史消息 / 额度信息 / 模型配置”是否属于同一鉴权层，禁止因为首个接口可直连就默认其余接口也可直连。
+3. 必须分别记录三类材料：最小可用 Cookie 集、额外上下文材料（localStorage / 初始化接口 / 页面状态）、稳定 query 参数与 body 结构。
+4. 若目标是做 OpenAI 兼容封装，必须先证明最小可用接口集，再决定兼容范围；优先做最小闭环，如 `/v1/chat/completions` 非流式 → 流式 → `/v1/responses`，禁止一开始铺太大全量接口。
+5. 模型字段必须优先以真实前端字段为准，例如 `model_preference`、模式默认值、别名映射；禁止直接拿外部 OpenAI 字段名硬套网页链路。
+6. 遇到额度接口、模型配置接口、线程详情接口返回 403 时，必须先归因到“鉴权层级不同或上下文缺失”，而不是草率认定接口不存在或参数错误。
+7. 若页面内普通 fetch/XHR hook 抓不到关键请求，但 preserved network 已证明请求存在，必须明确记录为“发送上下文不可见”，随后切换方向：优先源码调用链、运行时模块复用、或更底层调试能力，禁止在同层盲试 body 字段。
+8. 若纯脚本长期卡在发码、发问、提交等单一点位，但浏览器内直接复用前端现成实现已验证成功，应把结论写清：阻塞点是运行时上下文差异，不是表单字段缺失。
+9. 最终交付若为兼容服务，仍要遵守独立运行原则：服务本身可独立启动、输入输出稳定、兼容范围明确、已知 403 或能力缺口必须写入 README。
 
 ---
 

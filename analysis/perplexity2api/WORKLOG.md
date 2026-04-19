@@ -1,0 +1,381 @@
+# perplexity2api worklog
+- 时间：2026-04-19
+  - 阶段：任务初始化
+  - 发现或问题：用户要求在 analysis/perplexity2api 下完成对 https://www.perplexity.ai 的 js-reverse 分析，目标包括 OpenAI 兼容对话方案、请求构造、模型映射、真实流式响应、最小必要 headers/cookies、会话状态维护，并且必须验证后交付独立运行 Python 脚本。
+  - 结论：先用真实浏览器链路取证，请求级确认流式接口、鉴权材料、会话关联字段，再决定是否能稳定还原为纯 HTTP Python 脚本。
+  - 下一步：打开目标站点，观察登录态要求、初始化请求与对话流式请求。
+- 时间：2026-04-19
+  - 阶段：首页静态与源码初探
+  - 发现或问题：站点首页已加载大量 `/rest/*` 初始化接口与前端 sourcemap，说明可以从真实前端 bundle 还原请求构造；但当前尚未触发真实对话请求，不能直接确认聊天流式接口、必要鉴权字段和会话续接字段。
+  - 结论：下一步需要从源码搜寻对话提交函数与流式消费模块，同时若匿名态无法稳定触发对话，则需要基于已登录页面继续取证。
+  - 下一步：在已加载脚本中搜索 stream、thread、model 配置与 ask 输入相关实现。
+- 时间：2026-04-19
+  - 阶段：用户已手动发起测试消息
+  - 发现或问题：用户已在当前 Perplexity 页面发送“你好”，现在可以基于真实交互补抓聊天提交接口、流式返回、最小必要鉴权材料与会话续接字段。
+  - 结论：优先检查最新 network 请求，定位聊天提交与流式消费端点，再结合源码确认字段语义和模型映射。
+  - 下一步：提取最新聊天相关请求与请求发起栈。
+- 时间：2026-04-19
+  - 阶段：定位真实聊天端点
+  - 发现或问题：用户手动发送“你好”后，真实聊天请求命中 `POST /rest/sse/perplexity_ask`，线程详情读取命中 `GET /rest/thread/{slug}?with_parent_info=true&with_schematized_response=true...`，前端源码同时暴露续流端点 `/rest/sse/perplexity_ask/reconnect/{resume_entry_uuid}` 与实时线程更新 `/rest/sse/recent_thread_updates`。
+  - 结论：Perplexity 当前网页聊天主链路基于 SSE fetch，而不是 WebSocket；会话维护至少涉及 thread slug、entry uuid/resume_entry_uuid、cursor 以及 thread 详情接口。
+  - 下一步：继续提取 `perplexity_ask` 的参数构造、headers 注入、模型配置来源与 SSE 事件格式。
+- 时间：2026-04-19
+  - 阶段：提取请求构造与最小会话材料
+  - 发现或问题：源码显示聊天提交参数由 `lv(...)` 统一组装，关键字段包括 `frontend_uuid`、`frontend_context_uuid`、`model_preference`、`sources`、`mode`、`query_source`、`language`、`timezone`、`use_schematized_api=true`、`send_back_text_in_streaming_api=false`、`supported_block_use_cases` 等；真实页面可见基础 cookie 至少包含 `pplx.visitor-id`、`pplx.session-id`，并存在 `pplx-next-auth-session` localStorage 项，但仅凭当前 MCP 无法直接导出 fetch 原始请求头明细。
+  - 结论：可以先基于已确认的真实端点与前端参数生成独立 Python 脚本，脚本以用户提供的 Cookie 为输入，通过 `POST /rest/sse/perplexity_ask` 和线程详情接口维护会话；再本地用当前捕获值验证请求是否可跑通。
+  - 下一步：编写脚本、README，并执行最小验证。
+- 时间：2026-04-19
+  - 阶段：交付脚本与本地验证
+  - 发现或问题：已生成独立脚本 `perplexity2api.py`，使用 `requests` 直连 `POST /rest/sse/perplexity_ask` 并支持拉取 `GET /rest/thread/{thread_slug}`；验证时先使用当前页面可见的最小 cookie 子集 `pplx.visitor-id + pplx.session-id + pplx.trackingAllowed` 进行一次真实请求测试。
+  - 结论：以实际运行结果判断当前最小 cookie 集是否足够，若不足则再补充更多浏览器 cookie 或调整必要 headers。
+  - 下一步：根据运行结果修正脚本或 README。
+- 时间：2026-04-19
+  - 阶段：最小 cookie 集验证结果
+  - 发现或问题：使用 `pplx.visitor-id + pplx.session-id + pplx.trackingAllowed` 即可通过独立脚本成功命中 `POST /rest/sse/perplexity_ask`，真实返回新的 `thread_slug`、`entry_uuid` 与流式内容；但在同一 cookie 集下访问 `GET /rest/thread/{thread_slug}` 返回 `403 Forbidden`。
+  - 结论：当前已验证“发问链路”可独立运行，且最小必要 cookie 至少覆盖上述三项；“线程详情读取链路”仍需更多登录态材料，现阶段会话维护可先依赖 `thread_slug`、`entry_uuid` 与续流接口完成最小闭环。
+  - 下一步：如需完整历史线程拉取，再补抓线程详情接口所需附加 cookie 或鉴权头。
+- 时间：2026-04-19
+  - 阶段：实现 OpenAI 兼容服务
+  - 发现或问题：已新增 `openai_compatible_server.py`，使用标准库 `http.server` 暴露 `/v1/models` 与 `/v1/chat/completions`，内部直接复用 `PerplexityClient.ask()`；兼容层将 `messages` 拼成单次 prompt，再把 Perplexity 结果映射为 OpenAI 风格 JSON 或 SSE chunk。
+  - 结论：当前可提供最小 OpenAI 兼容能力，避免额外依赖；流式实现为兼容格式的分段输出，底层仍依赖已验证可用的网页请求链路。
+  - 下一步：启动本地服务并用 curl 验证非流式与流式接口。
+- 时间：2026-04-19
+  - 阶段：验证 OpenAI 兼容接口
+  - 发现或问题：本地已成功启动兼容服务并命中 `/v1/chat/completions`；首次命令行输出失败是 Windows 终端默认 GBK 无法打印 emoji，并非接口失败。切换 stdout 为 UTF-8 后，非流式与流式返回均可正常读出。
+  - 结论：最小 OpenAI 兼容服务已完成真实本地验证，可作为独立运行交付物。
+  - 下一步：汇总交付内容与当前限制。
+- 时间：2026-04-19
+  - 阶段：继续补兼容接口
+  - 发现或问题：用户要求继续扩展兼容层，优先补最小 `Authorization: Bearer` 校验与 `/v1/responses`，以便兼容更多 OpenAI 风格客户端。
+  - 结论：保持单文件服务结构，仅增加必要分支与最小鉴权，不引入额外框架。
+  - 下一步：修改服务脚本并做本地调用验证。
+- 时间：2026-04-19
+  - 阶段：补充鉴权与 Responses 兼容
+  - 发现或问题：已为兼容服务增加可选 `PPLX_OPENAI_API_KEY` 校验，启用后统一要求 `Authorization: Bearer <key>`；同时新增 `/v1/responses`，支持 `input` 为字符串或消息数组，并返回 OpenAI Responses 风格结构。
+  - 结论：当前兼容范围已覆盖更多主流 OpenAI SDK 调用路径，仍保持单文件最小实现。
+  - 下一步：启动服务并验证 `401`、`/v1/responses` 和带鉴权的 `/v1/chat/completions`。
+- 时间：2026-04-19
+  - 阶段：验证新增兼容接口
+  - 发现或问题：带 `PPLX_OPENAI_API_KEY=test-key` 启动服务后，未携带 Bearer 头访问 `/v1/models` 正确返回 `401 Unauthorized`；携带 Bearer 头后，`/v1/responses` 与 `/v1/chat/completions` 均成功返回真实结果。
+  - 结论：新增鉴权与 Responses 兼容已完成真实本地验证。
+  - 下一步：收尾并停止后台服务。
+- 时间：2026-04-19
+  - 阶段：扩展 AI 对话相关接口
+  - 发现或问题：用户要求继续补充 AI 对话相关 API，重点包括额度 API 与可用模型清单，并要求在 README 中完整展示，供后续编码参考。
+  - 结论：优先基于已知真实接口 `rest/models/config`、`rest/rate-limit/status`、`rest/rate-limit/free-queries`、`rest/user/settings` 做补充，再决定是否需要暴露到兼容服务。
+  - 下一步：抓取这些接口真实返回并整理模型列表。
+- 时间：2026-04-19
+  - 阶段：整理模型目录与接口限制
+  - 发现或问题：已从前端源码提取默认模型、模式映射和大部分可见模型 ID，并写入独立模型目录；额度与模型配置相关真实网页接口在独立 requests 环境下仍然返回 403，因此当前服务侧只能把这类结果以结构化错误返回。
+  - 结论：README 现已可作为后续编码参考，模型枚举足够支撑大部分调用适配；额度类接口仍需后续补取浏览器上下文鉴权材料。
+  - 下一步：确认辅助文件落盘位置，必要时修正路径并补一次语法检查。
+- 时间：2026-04-19
+  - 阶段：二次核对误建文件位置
+  - 发现或问题：从仓库根重新核对后确认，外层目录此前仅有 README 等文件，`models_catalog.md` 和 `perplexity_metadata.py` 实际仍停留在内层 `analysis/perplexity2api/analysis/perplexity2api/`。
+  - 结论：已立即把这两个缺失文件复制到外层目录，后续再决定是否清理内层残留。
+  - 下一步：再次核对外层文件是否已到位。
+- 时间：2026-04-19
+  - 阶段：清理误建目录并测试账号模型可用性
+  - 发现或问题：用户已确认删除内层误建目录，并继续测试当前账号实际可用模型。
+  - 结论：先清理目录，再基于当前最小可用聊天链路逐个探测模型是否能成功发问，用真实返回结果区分可用与不可用。
+  - 下一步：删除误建目录，编写或执行模型探测脚本。
+- 时间：2026-04-19
+  - 阶段：编写模型可用性探测脚本
+  - 发现或问题：模型配置接口当前无法在纯 requests 环境下直接拉到真实 JSON，因此需要退而求其次，基于已验证可用的聊天提交链路逐个试探候选模型。
+  - 结论：新增 `check_available_models.py`，对候选模型逐个发起最小问题 `请只回复 OK`，以真实成功或失败结果判断当前账号可用性。
+  - 下一步：运行脚本并汇总可用/不可用模型。
+- 时间：2026-04-19
+  - 阶段：执行模型可用性探测
+  - 发现或问题：已基于最小 Cookie 集和真实聊天链路对候选模型逐个探测，结果写入 `available_models_result.json`。
+  - 结论：以脚本输出为准整理当前账号可用模型与失败模型，并同步到 README，供后续编码直接参考。
+  - 下一步：把可用模型清单补到 README。
+- 时间：2026-04-19
+  - 阶段：输出当前账号可用模型清单
+  - 发现或问题：对 20 个候选模型做了真实可用性探测，当前样本中全部成功，无失败项。
+  - 结论：当前账号至少可用 `turbo`、`sonar`、`gpt4o`、`gpt4.1`、`o3-mini`、`claude2`、`claude46sonnet`、`claude46sonnetthinking`、`claude46opus`、`claude46opusthinking`、`claude45haiku`、`gemini25pro`、`gemini31pro_high`、`grok`、`grok4`、`kimik25thinking`、`r1_1776`、`pplx_reasoning`、`pplx_alpha`、`pplx_asi`。
+  - 下一步：如需扩大范围，可继续把 `models_catalog.md` 中其余模型纳入探测脚本。
+- 时间：2026-04-19
+  - 阶段：扩大模型探测范围
+  - 发现或问题：用户要求继续扩大探测范围，当前将按 `models_catalog.md` 中已整理出的前端枚举模型扩展候选集，覆盖搜索、推理、多媒体与 ASI 相关模型。
+  - 结论：继续沿用已验证可用的真实聊天链路 `POST /rest/sse/perplexity_ask`，对扩大后的候选列表逐个发送 `请只回复 OK`，以实际成功或失败结果判断账号可用性。
+  - 下一步：运行扩大后的探测脚本，汇总成功和失败模型，再同步 README。
+- 时间：2026-04-19
+  - 阶段：扩大探测执行受阻
+  - 发现或问题：本地执行 `check_available_models.py` 时缺少 `PPLX_COOKIE` 环境变量，脚本在启动阶段直接报错，且重定向命令把 `available_models_result.json` 覆盖成空文件。
+  - 结论：当前阻塞点不是脚本逻辑，而是执行环境未注入有效 Cookie；在拿到 `PPLX_COOKIE` 前不能继续输出新的真实探测结论。
+  - 下一步：恢复或重新生成结果文件后，使用带 `PPLX_COOKIE` 的环境重新运行扩大探测。
+- 时间：2026-04-19
+  - 阶段：收到用户提供的完整 Cookie
+  - 发现或问题：用户已提供当前浏览器会话 Cookie，扩大模型探测所需的执行环境材料已具备。
+  - 结论：可以直接在本地终端注入 `PPLX_COOKIE` 并重新执行扩大范围探测，结果以真实请求返回为准。
+  - 下一步：运行扩大后的探测脚本并汇总成功与失败模型。
+- 时间：2026-04-19
+  - 阶段：完成扩大范围模型探测
+  - 发现或问题：已基于用户提供的有效 Cookie 运行扩大后的 `check_available_models.py`，覆盖 93 个候选模型，结果写入 `available_models_result.json`，当前样本中全部成功，无失败项。
+  - 结论：当前账号在真实聊天链路下可用模型范围明显大于首次 20 个样本，现已覆盖搜索、推理、ASI、多媒体等多个类别，可直接作为后续代码白名单或能力映射输入。
+  - 下一步：同步 README 与模型目录，必要时再导出机器可读白名单。
+
+- 时间：2026-04-19
+  - 阶段：启动注册流程逆向
+  - 发现或问题：用户要求在 `analysis/perplexity2api` 下分析 `https://www.perplexity.ai/onboarding/org/create` 的完整邮箱注册流程，必须优先尝试纯脚本方案，接入 `utils/qq_mail` 收码，只有在所有脚本方案不可行后才允许转浏览器自动化，并最终交付经验证可独立运行的 Python 注册脚本。
+  - 结论：先基于真实页面与网络链路确认注册入口、请求顺序、验证码发送与校验接口、Cloudflare 风控形态，再并行评估是否能直接由 `requests/cloudscraper` 复现。
+  - 下一步：打开目标页面，抓取注册相关请求、前端源码入口和验证码链路。
+
+- 时间：2026-04-19
+  - 阶段：确认邮箱注册入口与初始接口
+  - 发现或问题：`/onboarding/org/create` 页面直接复用站内登录组件，邮箱按钮对应 `handleMagicLinkEmailSignIn()`；源码显示它会先调用 `POST /rest/enterprise/organization/login/details` 判断目标邮箱是否强制 SSO，若无需 SSO，则继续调用前端鉴权函数 `O("email", { email, callbackUrl, redirect: false, useNumericOtp: "true", redirectOnError: false })` 发起邮箱登录，并跳转 `/auth/verify-request?email=...&redirectUrl=...` 等待验证码。
+  - 结论：注册主链路第一段不是立即创建组织，而是“邮箱验证码登录/注册前置鉴权”；后续必须继续下钻 `O("email", ...)` 的真实 HTTP 端点、请求体和响应约束，才能评估 `requests/cloudscraper` 纯脚本方案是否可行。
+  - 下一步：继续定位鉴权函数 `O` 的实现与验证码校验接口，同时准备接入 QQ 邮箱收码。
+
+- 时间：2026-04-19
+  - 阶段：继续下钻验证码页与收码能力
+  - 发现或问题：当前已确认首段邮箱发码链路会落到 `/auth/verify-request`，但该页面 bundle 尚未在当前标签页实际加载，直接从已加载脚本列表无法取源；同时 `utils/qq_mail/qq_mail_idle.py` 已具备按收件人和时间窗口轮询最新邮件的 `fetch_latest_mail_to(...)` 能力，可直接复用为验证码收取基础组件。
+  - 结论：下一步改为直接抓取 `auth-verify-request` bundle 或 sourcemap 内容定位验证码提交接口；若前端源码仍不充分，则用纯脚本先验证 `GET /api/auth/csrf + POST /api/auth/signin/email` 发码是否可行，再决定是否需要借助浏览器实际完成一次验证码页交互取证。
+  - 下一步：提取验证码提交页面源码与请求端点，并开始编写收码辅助模块。
+
+- 时间：2026-04-19
+  - 阶段：验证纯脚本首段发码可行性
+  - 发现或问题：直接用 `requests.Session()` 请求 `GET https://www.perplexity.ai/api/auth/csrf` 返回 `403`，响应头包含 `cf-mitigated: challenge`，正文是 Cloudflare `Just a moment...` 挑战页，同时仅下发 `__cf_bm` Cookie；这说明连邮箱发码前置的 CSRF 获取都被 Cloudflare 拦截，当前并未进入真实 NextAuth 鉴权逻辑。
+  - 结论：纯 `requests` 方案在当前环境下已被明确阻塞，必须继续验证 `cloudscraper` 是否能通过该挑战；若 `cloudscraper` 仍失败，则可基本判定“纯脚本直连注册首段不可行”，后续只能考虑复用浏览器已过挑战上下文或转浏览器自动化。
+  - 下一步：用 `cloudscraper` 复测 `/api/auth/csrf`，并继续定位验证码校验页的实际接口。
+
+- 时间：2026-04-19
+  - 阶段：继续验证纯脚本发码表单
+  - 发现或问题：`cloudscraper` 已可拿到 `/api/auth/csrf` 的真实 `csrfToken`，说明 Cloudflare 首层挑战可以通过；但当前按已知字段 `email/callbackUrl/json/useNumericOtp/csrfToken` 提交到 `POST /api/auth/signin/email` 仍返回 `400 Invalid request body`，表明请求体格式、补充字段或 `Content-Type` 仍与前端真实请求不一致。
+  - 结论：纯脚本方案暂未被判死，但当前阻塞点已从 Cloudflare 转为 NextAuth 邮箱发码请求体还原不完整；需要继续定位前端真实提交编码方式，或抓一次浏览器实际发码请求做对照。
+  - 下一步：补抓真实邮箱发码网络请求细节，并开始搭建脚本结构与 QQ 邮箱收码模块。
+
+- 时间：2026-04-19
+  - 阶段：获取真实邮箱发码请求证据
+  - 发现或问题：用户已在真实浏览器注册页手动输入邮箱并点击“继续使用电子邮件”，现在可以基于浏览器网络记录直接比对真实 `POST /api/auth/signin/email` 请求与纯脚本构造差异。
+  - 结论：优先提取最新 network 中的发码请求、上游 `login/details` 判断请求与对应 initiator，再回填到纯脚本实现。
+  - 下一步：读取最新请求列表并锁定邮箱发码相关 reqid。
+
+- 时间：2026-04-19
+  - 阶段：抓到真实浏览器发码结果
+  - 发现或问题：真实浏览器点击邮箱继续后，network 明确出现顺序链路：`POST /rest/enterprise/organization/login/details?version=2.18&source=default` → `GET /api/auth/providers?version=2.18&source=default` → `GET /api/auth/csrf?version=2.18&source=default` → `POST /api/auth/signin/email?version=2.18&source=default`，最终页面跳转到 `/auth/verify-request?email=...&redirectUrl=%2Fonboarding%2Forg%2Fcreate&login-source=organization-onboarding`。
+  - 结论：此前纯脚本失败的一部分原因已明确是 query 参数与 callbackUrl 形态未完全对齐真实浏览器；接下来继续以真实 query、相对 `redirectUrl` 和可能存在的附加字段复测，尽量把发码请求压到纯脚本可跑通。
+  - 下一步：按真实 query 与 redirectUrl 重新组合请求体，并同步准备验证码收取与提交逻辑。
+
+- 时间：2026-04-19
+  - 阶段：落注册脚本首版骨架
+  - 发现或问题：已新增 `perplexity_register.py`，先固化当前已验证的前半段真实链路：`login/details` → `providers` → `csrf` → `signin/email`，并直接复用 `utils.qq_mail.qq_mail_idle.fetch_latest_mail_to(...)` 作为邮箱收码能力；由于验证码提交接口仍未定位，当前脚本先聚焦“发码 + 收码”验证与错误落盘。
+  - 结论：即使发码接口仍返回 `400 Invalid request body`，现在也已有独立可运行的研究脚本承接后续迭代，且收码模块已完成接入。
+  - 下一步：运行首版脚本验证当前输出，再继续定位验证码提交接口并补 README。
+
+- 时间：2026-04-19
+  - 阶段：修复注册脚本导入问题
+  - 发现或问题：首轮运行 `perplexity_register.py` 时因直接相对仓库外部解释器执行，未自动包含仓库根到 `sys.path`，导致 `from utils.qq_mail...` 导入失败。
+  - 结论：已在脚本启动处显式注入仓库根路径，确保独立运行时可以直接复用 `utils/qq_mail`。
+  - 下一步：重新执行脚本，确认当前至少能稳定跑到发码请求阶段。
+
+- 时间：2026-04-19
+  - 阶段：继续下钻验证码页与发码请求体
+  - 发现或问题：当前独立脚本已稳定复现到 `signin/email`，但仍返回 `400 Invalid request body`；需要继续从真实验证码页已加载脚本与网络记录中提取发码请求体和验证码提交接口。
+  - 结论：优先让当前页重载并检查 `auth-verify-request` 页面 bundle 是否进入已加载脚本列表，再结合 preserved network 继续定位真实请求差异。
+  - 下一步：读取重载后的脚本列表与最新 network。
+
+- 时间：2026-04-19
+  - 阶段：定位验证码提交接口并回填脚本
+  - 发现或问题：`auth-verify-request` 页面源码已明确验证码提交不是走 NextAuth callback，而是前端 `fetch('/api/auth/otp-redirect-link', { body: { email, otp, redirectUrl, emailLoginMethod: 'web-otp', loginSource } })`；验证码长度固定支持 6 位数字、`123-456` 或 `abc12-def34` 风格 token，当前组织注册链路携带 `loginSource=organization-onboarding`。
+  - 结论：完整注册闭环中的验证码提交端点已确认，可以先把该接口补进独立脚本；即使发码阶段仍被 `400 Invalid request body` 阻塞，脚本结构也已覆盖“发码、收码、提码提交”三段。
+  - 下一步：继续执行脚本并根据发码阶段结果判断是否还需要进一步抓原始请求体细节。
+
+- 时间：2026-04-19
+  - 阶段：继续下钻 signIn 底层实现
+  - 发现或问题：验证码页与提交接口已还原，当前唯一关键阻塞点收敛为 `POST /api/auth/signin/email` 请求体仍与真实浏览器不一致；需要继续从 `platform-core` 中展开 `signIn` 底层实现，确认真实 body、query、特殊 headers 与重定向参数拼装方式。
+  - 结论：优先读取 `platform-core-BKxTj_FT.js` 中 `signIn` 相关源码片段，而不是继续盲试请求字段。
+  - 下一步：提取 `signIn` 函数周边源码并据此再做一次脚本对齐。
+
+- 时间：2026-04-19
+  - 阶段：尝试从页面上下文直接复现 signIn 请求
+  - 发现或问题：纯 `cloudscraper` 侧多轮补参后 `signin/email` 仍为 `400 Invalid request body`，需要进一步区分问题来自字段缺失还是请求发送上下文差异。
+  - 结论：改为在当前真实页面上下文中直接用 `fetch` 按前端已知字段重放 `signin/email`，并同时继续追踪 API client 的附加头注入逻辑。
+  - 下一步：比较页面内 fetch 重放结果与脚本请求结果是否一致。
+
+- 时间：2026-04-19
+  - 阶段：切换到页面内 fetch hook 取证
+  - 发现或问题：既然 `signin/email` 的普通字段、query 与请求原因头都已补齐仍返回 `400`，需要直接抓取浏览器真实请求发送瞬间的 body 与 headers，而不是继续盲试。
+  - 结论：已在页面注入只读 fetch hook，专门监听 `/api/auth/signin/email` 请求，并准备让用户重新触发一次发码动作以抓取真实发送参数。
+  - 下一步：等待用户再次点击“继续使用电子邮件”，然后读取控制台中的 hook 输出。
+
+- 时间：2026-04-19
+  - 阶段：读取页面内 fetch hook 输出
+  - 发现或问题：用户已在注入 hook 后重新触发一次邮箱发码，现在可以直接从控制台日志提取 `/api/auth/signin/email` 的真实 body 与 headers，验证此前脚本构造缺失点。
+  - 结论：先读取控制台中的 `__PPLX_SIGNIN_EMAIL__` 日志，再与当前脚本实现逐项比对。
+  - 下一步：提取 hook 输出并回填脚本。
+
+- 时间：2026-04-19
+  - 阶段：改为页面变量持久捕获请求
+  - 发现或问题：上一轮 console hook 没有稳定拿到 `signin/email` 输出，但网络已证明真实点击已发生；问题更像是日志读取时机与跳转竞争，而不是 hook 思路本身失效。
+  - 结论：改为在页面里把捕获结果写入 `window.__pplxCaptured` 持久变量，并重新回到注册页等待用户再次点击，以避免 console 丢失。
+  - 下一步：用户重新点击后，直接读取 `window.__pplxCaptured`。
+
+- 时间：2026-04-19
+  - 阶段：读取页面变量中的真实请求快照
+  - 发现或问题：用户已在变量持久捕获 hook 生效后再次点击发码，可以直接读取 `window.__pplxCaptured` 验证 `/api/auth/signin/email` 的真实发送内容。
+  - 结论：优先读取捕获变量中的最新一条 `__PPLX_SIGNIN_EMAIL__` 记录，再决定如何回填脚本。
+  - 下一步：提取 `url / headers / body` 并与独立脚本比对。
+
+- 时间：2026-04-19
+  - 阶段：升级为 fetch + XHR 双通道捕获
+  - 发现或问题：普通 `window.fetch` hook 连续两轮都没有捕获到 `signin/email`，但 preserved network 一直稳定出现该请求，说明请求实现很可能不走简单的 `fetch(url, init)` 路径。
+  - 结论：已升级为 `fetch + XMLHttpRequest` 双通道 hook，并记录 `open/setRequestHeader/send` 阶段数据，继续回注册页等待用户重触发发码。
+  - 下一步：用户再次点击后读取 `window.__pplxCaptured` 中的双通道结果。
+
+- 时间：2026-04-19
+  - 阶段：读取双通道 hook 结果
+  - 发现或问题：用户已在 `fetch + XHR` 双通道 hook 生效后再次触发发码，现在可以检查是否终于抓到 `signin/email` 的底层发送参数。
+  - 结论：先读取 `window.__pplxCaptured`，若仍为空，则说明请求实现还在更底层或运行于当前 hook 无法覆盖的上下文。
+  - 下一步：根据读取结果决定是否继续深挖浏览器执行上下文限制。
+
+- 时间：2026-04-19
+  - 阶段：尝试直接调用前端现成 signIn 实现
+  - 发现或问题：既然网络与源码都确认 `signin/email` 的字段轮廓正确，但注入 hook 又无法抓到真实发送现场，说明阻塞点可能在运行时内部 client 或调用上下文，而不是表单参数本身。
+  - 结论：改为优先寻找页面运行时中是否存在可直接调用的 `signIn` / auth 入口，若能直接调用前端现成实现，就能绕过请求细节不可见的问题。
+  - 下一步：枚举运行时全局对象并结合源码继续定位可调用入口。
+
+- 时间：2026-04-19
+  - 阶段：转向模块运行时定位导出实例
+  - 发现或问题：`index.html-DJ9WWYJu.js` 已确认把 `Tt` 作为导出 `C` 暴露，但它没有挂到 `window`，直接找全局 signIn 入口失败；因此需要继续定位 Vite/Rolldown 运行时如何保存模块命名空间或加载结果。
+  - 结论：下一步优先分析 `rolldown-runtime` 并枚举页面上可能暴露的 runtime / module / import 相关对象，尝试拿到 `index.html` 模块实例。
+  - 下一步：提取 runtime 源码并检查页面全局属性。
+
+- 时间：2026-04-19
+  - 阶段：转向 React Fiber 运行时取证
+  - 发现或问题：全局运行时与模块命名空间都没有暴露 `signIn` 入口，但页面存在 React 容器 `__reactContainer$...`，说明仍可通过 Fiber 树反查当前页面组件与 props，寻找登录页面组件持有的闭包或回调。
+  - 结论：继续利用 React Fiber 树枚举组件层级，优先定位注册页或验证码页相关组件名，再尝试读取其 memoizedProps / hooks 上的函数引用。
+  - 下一步：抓取当前 Fiber 树摘要并寻找 auth / onboarding 相关组件。
+
+- 时间：2026-04-19
+  - 阶段：确认纯脚本阻塞边界并转最小浏览器参与方案
+  - 发现或问题：已对 `signin/email` 做了源码级字段还原、`cloudscraper` 重放、页面内 fetch/XHR 双通道 hook、运行时模块与 React 容器探测；真实网络始终稳定出现该请求，但在当前可见范围内无法拿到其真实发送上下文，且纯脚本始终返回 `400 Invalid request body`。
+  - 结论：在现有工具能力下，纯脚本路线已充分验证到边界，继续同层盲挖收益极低；后续改为“最小浏览器参与”的混合方案：仅让浏览器完成被隔离的 `signin/email` 发码动作，QQ 邮箱收码、验证码提取、`otp-redirect-link` 提交与结果处理仍由独立 Python 脚本接管。
+  - 下一步：实现混合方案脚本骨架，并补 README 说明新的执行方式与当前范围。
+
+- 时间：2026-04-19
+  - 阶段：验证混合方案脚本启动结果
+  - 发现或问题：首次直接启动 `perplexity_register.py --hybrid` 后，后台任务提前失败，需要读取终端输出确认是环境、网络、邮箱还是参数问题，再决定是否重试。
+  - 结论：先读取失败输出定位启动失败原因，避免在未知原因下重复同一动作。
+  - 下一步：查看后台输出并针对性修正后再验证。
+- 时间：2026-04-19 14:51:55
+  - 阶段：补写分析总结文档
+  - 发现或问题：`analysis/perplexity2api` 已累计对话主链路、OpenAI 兼容层、模型探测、额度接口与注册混合方案等多段结论，但目录下缺少与 `analysis/maoyan`、`analysis/notion2api` 对齐的统一分析总结文档，不利于后续横向复用与知识沉淀。
+  - 结论：新增 `analysis/perplexity2api/analysis.md`，按统一结构汇总交付物、接口链路、SSE 解析、模型映射、分层鉴权、注册边界、问题复盘与方法论。
+  - 下一步：如后续补齐线程详情鉴权或注册纯脚本发码证据，再继续追加更新分析报告与 README。
+- 时间：2026-04-19 14:07:31
+  - 阶段：定位混合方案首次失败原因
+  - 发现或问题：读取失败输出后确认，脚本已成功跑到 `login/details` 与混合模式提示阶段，真正失败点在 QQ 邮箱 IMAP 登录；`imaplib2` 报错 `LOGIN command error: BAD [b'Login parameters!']`，日志中实际发送的是空用户名和空密码，说明当前环境未配置 `QQ_MAIL_IMAP_USER` 与 `QQ_MAIL_IMAP_PASSWORD`。随后因无法收码，脚本在等待邮件阶段超时退出。
+  - 结论：当前阻塞点不是 Perplexity 注册链路本身，而是本地 QQ 邮箱配置缺失；已为独立脚本补充 `--manual-code` 模式，允许在浏览器手动发码后，由用户手动输入验证码，继续验证 `otp-redirect-link` 提交链路。
+  - 下一步：使用 `python perplexity_register.py <email> --hybrid --manual-code` 重新做一次真实验证，并观察验证码提交结果与 `redirect_url`。
+- 时间：2026-04-19 14:07:31
+  - 阶段：验证手动验证码模式的执行边界
+  - 发现或问题：以后台任务方式启动 `python perplexity_register.py xxx@example.test --hybrid --manual-code` 后，脚本成功执行 `login/details` 并进入等待人工发码与人工输入验证码阶段，但由于后台任务没有交互式 stdin，执行 `input("请输入验证码: ")` 时抛出 `EOFError: EOF when reading a line`。
+  - 结论：`--manual-code` 模式本身逻辑正常，但不能在当前无交互后台任务里完成端到端自动验证；要继续真实提交验证码，只能由用户在前台终端直接运行脚本并手动输入验证码，或先补齐 QQ 邮箱 IMAP 配置后改回自动收码模式。
+  - 下一步：同步 README，明确 `--manual-code` 需要前台交互终端运行，并把当前验证状态说明清楚。
+- 时间：2026-04-19 14:09:51
+  - 阶段：接收用户提供的测试邮箱规则并复查收码环境
+  - 发现或问题：用户明确要求改为我自行生成 `per当前时间戳@example.test` 测试邮箱，并直接使用 `utils/qq_mail` 的现有脚本和配置自动收码完成验证。我已生成测试邮箱 `per<timestamp>@example.test`，但本地环境复查结果显示 `QQ_MAIL_IMAP_USER`、`QQ_MAIL_IMAP_PASSWORD`、`QQ_MAIL_SMTP_USER`、`QQ_MAIL_SMTP_PASSWORD` 当前均为空。
+  - 结论：当前仓库代码已具备自动收码能力，但此会话实际终端环境尚未注入 QQ 邮箱凭据，所以还不能直接完成“自己获取验证码”的真实验证；下一步需要先定位用户所说的现有配置来源，并在不改动敏感文件的前提下复用已有环境装载方式。
+  - 下一步：检查 `utils/qq_mail` 目录下的稳定说明和环境加载方式，确认应如何在当前终端启用现有收码配置。
+
+- 时间：2026-04-19
+  - 阶段：定位混合方案首次验证失败原因
+  - 发现或问题：首次运行混合方案时，脚本前半段已正常执行到 `login_details` 与人工发码提示，但 QQ 邮箱 IMAP 登录失败，报错 `LOGIN command error: BAD [Login parameters!]`，实际登录参数为空；随后因为未收到邮件导致 `TimeoutError`。这说明当前失败点不是 Perplexity 链路，而是本地 QQ 邮箱环境变量未配置。
+  - 结论：为保证脚本可继续验证，已补一个 `--manual-code` 分支，允许在没有 QQ 邮箱配置时改为人工输入验证码；后续若要恢复自动收码，只需补齐 `QQ_MAIL_IMAP_USER/QQ_MAIL_IMAP_PASSWORD` 等环境变量。
+  - 下一步：用 `--hybrid --manual-code` 重新验证脚本交互链路。
+- 时间：2026-04-19 14:11:19
+  - 阶段：接收用户授权复用现有 QQ 邮箱配置
+  - 发现或问题：用户已明确授权我把 `utils/qq_mail/.env` 中的现有配置复制到当前可被脚本实际加载的位置，以继续完成自动收码验证。此前已确认 [qq_mail_idle.py:30-31](../../utils/qq_mail/qq_mail_idle.py#L30-L31) 只加载仓库根 `.env`，不会读取 `utils/qq_mail/.env`。
+  - 结论：按最小改动方案，不修改收码脚本逻辑，直接把现有 QQ 邮箱配置转换为仓库根 `.env` 中可识别的环境变量名，再执行真实混合注册自动收码验证。
+  - 下一步：写入仓库根 `.env`，重新检查环境装载结果，并启动新一轮真实验证。
+- 时间：2026-04-19 14:11:48
+  - 阶段：接通 QQ 邮箱环境并完成收码自测
+  - 发现或问题：已把现有 QQ 邮箱配置写入仓库根 `.env`，随后复查确认 `QQ_MAIL_IMAP_USER`、`QQ_MAIL_IMAP_PASSWORD`、`QQ_MAIL_SMTP_USER`、`QQ_MAIL_SMTP_PASSWORD` 均可被加载。执行 `python utils/qq_mail/qq_mail_idle.py --test` 时，SMTP 发信与 IMAP 收信链路已实际成功，脚本最后仅因 Windows 控制台 GBK 无法输出 `✅` 触发 `UnicodeEncodeError`，不是收码失败。
+  - 结论：`utils/qq_mail` 的现有配置和脚本现在已可在当前环境中完成自动收码，满足继续做 Perplexity 混合注册自动验证的前置条件。
+  - 下一步：使用新测试邮箱 `per<timestamp>@example.test` 启动 `perplexity_register.py --hybrid`，等待真实发码并自动拉取验证码。
+- 时间：2026-04-19 14:14:15
+  - 阶段：首次自动收码验证结果回收
+  - 发现或问题：后台运行 `python perplexity_register.py per<timestamp>@example.test --hybrid` 后，脚本已成功完成 `login/details` 并进入等待验证码邮件阶段，但在默认超时内未收到匹配邮件，最终抛出 `TimeoutError`。这说明当前自动收码链路可运行，但本轮并没有观察到发往该测试地址的验证码邮件。
+  - 结论：当前阻塞点从“邮箱环境不可用”转为“Perplexity 发码是否实际送达或是否被当前邮件过滤条件漏掉”；下一步需要直接检查最近收件箱内容、发件人名称和主题模式，确认是没有发到，还是被 `sender_filter=perplexity` 过滤掉。
+  - 下一步：直接用 `fetch_latest_mail_to` 拉取最近发往该地址的邮件，并在必要时放宽发件人过滤条件后重试。
+- 时间：2026-04-19 14:14:15
+  - 阶段：定位自动收码进一步阻塞点
+  - 发现或问题：在直接检查最近邮件时，`fetch_latest_mail_to` 没有返回“无邮件”，而是先在解析收件箱历史邮件头时抛出 `LookupError: unknown encoding: unknown-8bit`。问题定位到 `decode_str()` 仅按 `decode_header(s)[0]` 单段解码，遇到 `unknown-8bit` 编码头会直接异常，导致搜索流程提前中断。
+  - 结论：当前自动收码阻塞点还包括 QQ 邮箱脚本自身的邮件头兼容性问题；需先修复 `decode_str()`，把 `unknown-8bit` 视为 `utf-8` 容错解码并支持多段 header，再重新检查目标验证码邮件是否已存在。
+  - 下一步：修复 `utils/qq_mail/qq_mail_idle.py` 后重跑最近邮件检查与混合注册验证。
+- 时间：2026-04-19 14:16:58
+  - 阶段：直接核对收件箱中的 Perplexity 邮件样本
+  - 发现或问题：修复 `decode_str()` 后，已能直接遍历收件箱并读到多封真实 Perplexity 邮件，发件人为 `Perplexity <team@mail.perplexity.ai>`，主题主要为 `Sign in to Perplexity`，也存在中文欢迎邮件样本；但最近 `pid.im` 相关邮件中并没有发往 `per<timestamp>@example.test` 的记录，说明本轮混合验证超时不是过滤条件误伤，而是该测试地址对应的 Perplexity 发码根本没有送达邮箱。
+  - 结论：当前最关键阻塞点不在 QQ 邮箱脚本，而在“混合模式等待期间并没有实际触发浏览器发码动作”；要继续验证，必须在脚本等待窗口内由浏览器真实点击“继续使用电子邮件”，或改为自动化浏览器完成这一步。
+  - 下一步：把这一关键结论同步给用户，并在用户触发真实发码后立刻继续收码与提交验证码验证。
+- 时间：2026-04-19 14:19:25
+  - 阶段：补充延长等待窗口的失败证据
+  - 发现或问题：即使把等待时间扩到 `--mail-timeout 180`，`python perplexity_register.py per<timestamp>@example.test --hybrid --mail-timeout 180` 仍然在等待验证码邮件阶段超时退出，输出与前一轮一致，依旧没有任何发往该地址的验证码邮件进入收件箱。
+  - 结论：这进一步坐实当前失败原因不是“等待时间太短”，而是等待窗口内没有实际发码送达；后续继续单纯延长超时没有意义。
+  - 下一步：停止继续空等，转为要求在等待窗口内真实触发浏览器发码，或实现浏览器自动化来完成该动作。
+- 时间：2026-04-19 14:20:34
+  - 阶段：复核 QQ 邮箱脚本能力是否失效
+  - 发现或问题：针对用户“之前脚本收码没问题”的怀疑，我直接用 `fetch_latest_mail_to()` 复测了已有的 Perplexity 邮件样本。结果 `posase<timestamp>@example.test`、`pot1@example.test`、`xxx@example.test` 三个地址都能被脚本正确匹配，且正文中已成功提取到真实验证码与 magic link；同时直接用 IMAP 搜索 `FROM perplexity` 也能稳定列出这些邮件。
+  - 结论：当前 `utils/qq_mail` 的收码能力是正常的，之前的怀疑需要修正；问题不在“脚本收不到 Perplexity 邮件”，而在于这次测试地址 `per<timestamp>@example.test` 根本没有收到对应邮件。也就是说，更可能是发码动作没有发生、发到了别的邮箱，或该地址输入与实际触发时不一致。
+  - 下一步：回到注册触发侧核对真实浏览器是否确实以 `per<timestamp>@example.test` 发起了邮箱继续动作，并继续抓取对应网络证据。
+- 时间：2026-04-19 14:22:11
+  - 阶段：核对浏览器侧真实发码目标邮箱
+  - 发现或问题：直接检查当前浏览器页面与保留网络记录后，已确认当前页并不是 `per<timestamp>@example.test` 对应的注册页，而是已经停留在 `https://www.perplexity.ai/auth/verify-request?email=xxx%40pid.im&redirectUrl=%2Fonboarding%2Forg%2Fcreate&login-source=organization-onboarding`。同时 preserved network 中存在完整链路 `login/details -> providers -> csrf -> signin/email`，对应的就是这次把页面带到 `email=xxx@example.test` 的发码动作。
+  - 结论：这解释了为什么 QQ 邮箱脚本能收到 `xxx@example.test` 的 Perplexity 邮件，却始终等不到 `per<timestamp>@example.test`：浏览器真实触发的邮箱根本不是后者，而是旧的 `xxx@example.test`。
+  - 下一步：重新回到注册页，使用与脚本一致的新测试邮箱再次真实触发发码，再继续自动收码与验证码提交验证。
+- 时间：2026-04-19 14:25:39
+  - 阶段：开始统一新一轮测试邮箱
+  - 发现或问题：已重新打开注册页 `https://www.perplexity.ai/onboarding/org/create`，并生成新的统一测试邮箱 `per<timestamp>@example.test`，避免继续复用先前页面里残留的 `xxx@example.test` 状态。
+  - 结论：下一轮必须保证浏览器实际输入的邮箱与后台脚本等待的邮箱完全一致，才能验证混合注册闭环。
+  - 下一步：在当前注册页填入 `per<timestamp>@example.test` 并触发真实发码，同时启动脚本等待自动收码。
+- 时间：2026-04-19 14:26:58
+  - 阶段：定位浏览器自动填表未成功触发发码的原因
+  - 发现或问题：直接给邮箱输入框赋值并派发普通 DOM `input/change` 事件后，页面中的“继续使用电子邮件”按钮仍保持 disabled；继续下钻 React Fiber 后确认，该输入组件真正依赖上层组件 `H` 的 `setEmail` 更新状态。调用该层 `setEmail('per<timestamp>@example.test')` 后，按钮立即变为可点击，证明此前自动填值没有真正驱动 React 状态。
+  - 结论：之前这轮自动验证失败的关键原因，是浏览器自动化只改了 DOM 值，没有改到 React state，因此根本没有真实触发发码请求。
+  - 下一步：基于已定位到的 `setEmail` 路径重新执行状态级填值并点击按钮，再配合脚本继续收码验证。
+- 时间：2026-04-19 14:28:18
+  - 阶段：完成状态级发码触发并回收结果
+  - 发现或问题：使用 React `setEmail('per<timestamp>@example.test')` 更新状态后重新点击按钮，浏览器已真实发出完整链路 `login/details -> providers -> csrf -> signin/email`，页面也成功跳转到 `auth/verify-request?email=per1776579939%40pid.im...`，页面文案明确显示“临时登录链接已发送至 per<timestamp>@example.test”。但随后立即用 `fetch_latest_mail_to()` 检查最近 10 分钟内发往该地址的 Perplexity 邮件，结果仍为 `None`；后台混合脚本也继续因等待邮件超时退出。
+  - 结论：现在可以确认两件事：一是浏览器侧发码动作已经真实完成；二是问题已收敛为“Perplexity 页面声称已发送，但 pid.im 收件箱在等待窗口内没有收到这封邮件”。这不再是脚本、过滤条件或前端状态问题，而更像是该特定地址的投递异常、供应商侧延迟，或邮件被落到其他投递路径。
+  - 下一步：改用一个已知曾成功收到 Perplexity 邮件的 pid.im 地址做对照实验，验证同一流程是否仍能稳定送达。
+- 时间：2026-04-19 14:30:53
+  - 阶段：修正“邮件未送达”的错误结论
+  - 发现或问题：用户提醒后重新核查，确认 `per<timestamp>@example.test` 的 Perplexity 邮件实际上已经送达，主题为 `Sign in to Perplexity`，正文中可提取验证码 `618835`。进一步复现发现，`fetch_latest_mail_to()` 本身可以取到这封邮件，但只要 `sent_after` 稍晚于邮件时间戳，就会返回 `None`；而 `perplexity_register.py` 在混合模式下把 `sent_after = time.time()` 记录在“提示用户去浏览器发码”之前，导致如果邮件在脚本真正进入等待前就已经送达，时间过滤会把这封有效邮件误判为旧邮件并漏掉。
+  - 结论：之前的问题不是“邮件没到”，而是注册脚本的时间窗口基准取错了，属于脚本逻辑 bug。混合模式下应在开始实际等待邮件前重新取时间基准，或给 `sent_after` 留一个合理回溯窗口，避免把刚送达的验证码邮件过滤掉。
+  - 下一步：修复 `perplexity_register.py` 的 `sent_after` 逻辑后重新验证自动收码与验证码提交闭环。
+- 时间：2026-04-19 14:31:24
+  - 阶段：修复混合模式收码时间窗口并验证提交闭环
+  - 发现或问题：已将 `perplexity_register.py` 的混合模式 `sent_after` 调整为在提示发码后预留 30 秒回溯窗口，避免邮件比等待逻辑更早到达时被过滤。随后直接使用这封真实邮件中的验证码 `618835` 运行 `python perplexity_register.py per<timestamp>@example.test --hybrid --otp 618835`，脚本成功返回 `200`，响应为 `{'redirect': '/api/auth/callback/email?...token=618835', 'status': 'success'}`，并打印出 `redirect_url`。
+  - 结论：当前“最小浏览器参与”混合方案已经验证闭环可行：浏览器负责真实发码，Python 脚本可自动收码并成功调用 `POST /api/auth/otp-redirect-link` 提交验证码，得到后续跳转地址。
+  - 下一步：对 README 做最终同步，并向用户汇报已验证通过的链路与仍未纯脚本打通的边界。
+- 时间：2026-04-19 14:37:51
+  - 阶段：开始完整演示自动收码与自动提交
+  - 发现或问题：用户要求再完整演示一次“浏览器发码 + 脚本自动收码 + 自动提交验证码”的整条合流程。我已重新回到注册页并生成新的演示邮箱 `per<timestamp>@example.test`。
+  - 结论：本轮要避免复用旧页面状态，必须保证浏览器实际触发邮箱与脚本等待邮箱完全一致。
+  - 下一步：在当前注册页以 React 状态级方式填入 `per<timestamp>@example.test` 触发真实发码，并并行启动脚本等待自动收码与自动提交。
+- 时间：2026-04-19 14:39:02
+  - 阶段：完整演示自动收码与自动提交成功
+  - 发现或问题：本轮使用新邮箱 `per<timestamp>@example.test` 完整重演了混合方案。浏览器侧真实触发后，页面跳转到 `auth/verify-request?email=per1776580671%40pid.im...`；脚本自动收到真实邮件，输出 `mail_subject=Sign in to Perplexity`、`mail_sender=Perplexity <team@mail.perplexity.ai>`、`mail_code=912372`，随后自动调用 `POST /api/auth/otp-redirect-link` 成功返回 `200`，响应中包含 `redirect=/api/auth/callback/email?...token=912372`。
+  - 结论：当前“浏览器发码 + Python 自动收码 + Python 自动提交验证码”的整条混合链路已完成第二次真实演示验证，可稳定作为当前可交付方案。
+  - 下一步：向用户汇报本轮完整演示成功结果；若后续仍要推进，就只剩继续深挖纯脚本发码 `signin/email` 这一边界。
+- 时间：2026-04-19 14:40:37
+  - 阶段：重新核对纯脚本发码剩余阻塞点
+  - 发现或问题：重新读取当前前端源码后再次确认，真实 `signIn` 主函数 `Hn(...)` 组装的请求体核心仍是 `body:{...a, csrfToken:await hn(), callbackUrl:r, json:'true'}`，并通过 `mn.POST(..., redirect:'manual')` 发往 `/api/auth/signin/{provider}`；外层 `Tt(...)` 仅额外处理 `redirectOnError`，并不会把它转成底层 body 字段。这说明此前脚本层对 `redirectOnError` 的盲补本身不是关键差异。
+  - 结论：当前纯脚本阻塞点仍更像“浏览器上下文差异”而不是普通字段遗漏：包括 `mn.POST/Jt` 底层 fetch 包装、同站 cookie/挑战态、以及网页运行环境中某些直连 requests 无法复现的约束。
+  - 下一步：用最新源码字段重新做一次最小纯脚本复测，并与浏览器链路对比最终残差，再决定是否还有值得继续猜的请求细节。
+- 时间：2026-04-19 14:42:30
+  - 阶段：再次尝试抓取浏览器发码原始快照
+  - 发现或问题：我重新注入了 `fetch + XHR` 双通道 hook，并在新邮箱 `perhook<timestamp>@example.test` 上再次触发了真实发码。结果与前几轮一致：保留 network 中明确出现完整链路 `login/details -> providers -> csrf -> signin/email`，但注入层 `window.fetch` 与 `XMLHttpRequest` hook 依然没有捕获到任何 `/api/auth/signin/email` 原始 `headers/body`。这说明该请求虽表现为 fetch 请求，但其真实发送路径仍位于当前注入 hook 无法覆盖的上下文。
+  - 结论：现阶段已经可以把“普通页面级 fetch/XHR hook 抓原始 body”这条路判定为无效；继续在同一层盲抓价值很低。纯脚本残余差异仍然只能归结到更底层运行上下文，而不是页面 JS 可见层。
+  - 下一步：如继续深挖，只剩两条高价值方向：一是想办法在浏览器内直接复用前端 `signIn` 实现拿结果，二是继续从更底层调试能力寻找请求原始载荷来源。
+- 时间：2026-04-19 14:44:18
+  - 阶段：浏览器内直接复用前端 signIn 实现
+  - 发现或问题：在非 main world 执行上下文里，已成功 `import('https://pplx-next-static-public.perplexity.ai/_spa-aux/assets/index.html-DJ9WWYJu.js')`，并确认导出的 `C` 就是前端 signIn 入口。直接调用 `await mods.C('email', { email: 'perdirect<timestamp>@example.test', callbackUrl: '/onboarding/org/create', redirect: false, useNumericOtp: 'true', redirectOnError: false }, { version: '2.18', source: 'default' })` 后，浏览器成功跳转到 `auth/verify-request?email=perhook1776581000%40pid.im...`，说明“浏览器内直接复用现成 signIn 实现”这条路是可行的。
+  - 结论：这进一步证明当前真正打不通的是“requests/cloudscraper 纯脚本上下文”，而不是参数本身；只要复用站内真实运行时，前端现成实现就能稳定完成发码。当前还需再核对一次传入邮箱与最终跳转邮箱是否一致，以及是否确有对应邮件送达。
+  - 下一步：检查 `perdirect<timestamp>@example.test` 的收件情况，并继续比对浏览器内调用参数与最终页面邮箱是否存在状态污染或旧页面残留。
+- 时间：2026-04-19 14:45:31
+  - 阶段：收敛当前可交付方案
+  - 发现或问题：进一步核对后，`perdirect<timestamp>@example.test` 已实际收到 Perplexity 邮件，验证码为 `472191`。结合前面的两轮完整闭环演示，可以确认：浏览器真实上下文发码是稳定可用的，Python 侧自动收码和验证码提交也已稳定验证；唯一长期未突破的仍是纯 `cloudscraper` 直连 `signin/email`。
+  - 结论：当前最合理的收敛方式是不再继续盲猜纯 HTTP 请求细节，而是把“浏览器内复用前端 signIn 发码 + Python 自动收码 + Python 自动提交验证码”作为稳定交付方案。
+  - 下一步：向用户汇报最终收敛结论；如后续还要继续研究，则只建议围绕更底层请求载荷或浏览器运行时封装继续深挖。

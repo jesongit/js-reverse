@@ -56,10 +56,14 @@ def decode_str(s):
     """安全解码 email 头部字符串"""
     if s is None:
         return ""
-    result, encoding = email.header.decode_header(s)[0]
-    if isinstance(result, bytes):
-        return result.decode(encoding or "utf-8", errors="replace")
-    return result
+    parts = []
+    for result, encoding in email.header.decode_header(s):
+        if isinstance(result, bytes):
+            charset = encoding if encoding and encoding.lower() != "unknown-8bit" else "utf-8"
+            parts.append(result.decode(charset, errors="replace"))
+        else:
+            parts.append(result)
+    return "".join(parts)
 
 
 def extract_body(msg):

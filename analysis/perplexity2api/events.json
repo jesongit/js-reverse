@@ -1,0 +1,1845 @@
+[
+  {
+    "event": "message",
+    "data": {
+      "backend_uuid": "c99c077e-dba2-4094-b353-c6551033417d",
+      "context_uuid": "0ef77d21-4cfc-4110-a602-eac6355674ac",
+      "uuid": "99d94d65-494c-41bf-82de-5a54c56debc2",
+      "frontend_context_uuid": "a9468900-9b6f-4012-8489-ee887dcb457f",
+      "display_model": "turbo",
+      "mode": "CONCISE",
+      "search_focus": "writing",
+      "source": "default",
+      "thread_url_slug": "ni-hao-yZwHftuiQJSzU8ZVEDNBfQ",
+      "expect_search_results": "false",
+      "knowledge_cards": [],
+      "gpt4": false,
+      "text_completed": false,
+      "blocks": [
+        {
+          "intended_usage": "pro_search_steps",
+          "plan_block": {
+            "progress": "IN_PROGRESS",
+            "goals": [],
+            "steps": [
+              {
+                "uuid": "",
+                "step_type": "INITIAL_QUERY",
+                "initial_query_content": {
+                  "query": "你好"
+                }
+              }
+            ],
+            "final": false
+          }
+        }
+      ],
+      "message_mode": "STREAMING",
+      "answer_modes": [],
+      "reconnectable": true,
+      "cursor": "069e45f1-5fc6-7905-8000-2c8c86d07afb",
+      "search_mode": "SEARCH",
+      "status": "PENDING",
+      "final_sse_message": false
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "backend_uuid": "c99c077e-dba2-4094-b353-c6551033417d",
+      "context_uuid": "0ef77d21-4cfc-4110-a602-eac6355674ac",
+      "uuid": "99d94d65-494c-41bf-82de-5a54c56debc2",
+      "frontend_context_uuid": "a9468900-9b6f-4012-8489-ee887dcb457f",
+      "display_model": "turbo",
+      "mode": "CONCISE",
+      "search_focus": "writing",
+      "source": "default",
+      "thread_url_slug": "ni-hao-yZwHftuiQJSzU8ZVEDNBfQ",
+      "expect_search_results": "false",
+      "knowledge_cards": [],
+      "gpt4": false,
+      "text_completed": false,
+      "message_mode": "STREAMING",
+      "answer_modes": [],
+      "reconnectable": true,
+      "cursor": "069e45f1-6057-7115-8000-cb0ad7e3a1a5",
+      "classifier_results": {
+        "personal_search": false,
+        "skip_search": true,
+        "widget_type": "GENERAL",
+        "hide_nav": false,
+        "hide_sources": false,
+        "image_generation": false,
+        "time_widget": false,
+        "mhe_predictions": {
+          "skip_search": true,
+          "image_generation_intent": false,
+          "time_widget": false,
+          "places_search_intent": false,
+          "shopping_intent": false,
+          "movie_lists_intent": false,
+          "image_preview": false,
+          "video_preview": false,
+          "nav_intent": false,
+          "personal_search": false,
+          "weather_widget": false,
+          "finance_widget_gating": false,
+          "calculator_widget": false,
+          "comet_nav_widget_combined_target": false,
+          "finance_agent_gating": false
+        },
+        "mhe_predictions_full": {
+          "skip_search": {
+            "is_true": true,
+            "probability": 0.81640625,
+            "threshold": 0.4
+          },
+          "image_generation_intent": {
+            "is_true": false,
+            "probability": 4.005432e-05,
+            "threshold": 0.98
+          },
+          "time_widget": {
+            "is_true": false,
+            "probability": 1.0788441e-05,
+            "threshold": 0.8
+          },
+          "places_search_intent": {
+            "is_true": false,
+            "probability": 0.0039367676,
+            "threshold": 0.85
+          },
+          "shopping_intent": {
+            "is_true": false,
+            "probability": 0.00013160706,
+            "threshold": 0.8
+          },
+          "movie_lists_intent": {
+            "is_true": false,
+            "probability": 0.0008277893,
+            "threshold": 0.65
+          },
+          "image_preview": {
+            "is_true": false,
+            "probability": 0.0008544922,
+            "threshold": 0.42
+          },
+          "video_preview": {
+            "is_true": false,
+            "probability": 0.0010299683,
+            "threshold": 0.5
+          },
+          "nav_intent": {
+            "is_true": false,
+            "probability": 0.00088119507,
+            "threshold": 0.5
+          },
+          "personal_search": {
+            "is_true": false,
+            "probability": 0.0,
+            "threshold": 0.050000000000000044
+          },
+          "skip_personal_search": {
+            "is_true": true,
+            "probability": 1.0,
+            "threshold": 0.95
+          },
+          "weather_widget": {
+            "is_true": false,
+            "probability": 0.00029563904,
+            "threshold": 0.4
+          },
+          "finance_widget_gating": {
+            "is_true": false,
+            "probability": 0.00024604797,
+            "threshold": 0.53
+          },
+          "calculator_widget": {
+            "is_true": false,
+            "probability": 5.096197e-06,
+            "threshold": 0.3
+          },
+          "comet_nav_widget_combined_target": {
+            "is_true": false,
+            "probability": 0.017944336,
+            "threshold": 0.5
+          },
+          "domain_subdomain": {
+            "label": "TRANSLATION/LANGUAGE_TRANSLATION",
+            "probability": 0.7890625
+          },
+          "finance_agent_gating": {
+            "is_true": false,
+            "probability": 1.4722347e-05,
+            "threshold": 0.7
+          }
+        }
+      },
+      "search_mode": "SEARCH",
+      "status": "PENDING",
+      "final_sse_message": false
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "backend_uuid": "c99c077e-dba2-4094-b353-c6551033417d",
+      "context_uuid": "0ef77d21-4cfc-4110-a602-eac6355674ac",
+      "uuid": "99d94d65-494c-41bf-82de-5a54c56debc2",
+      "frontend_context_uuid": "a9468900-9b6f-4012-8489-ee887dcb457f",
+      "display_model": "turbo",
+      "mode": "CONCISE",
+      "search_focus": "writing",
+      "source": "default",
+      "read_write_token": "b62b91f9-4ba9-4d00-a198-ef4e51717c16",
+      "thread_url_slug": "ni-hao-yZwHftuiQJSzU8ZVEDNBfQ",
+      "expect_search_results": "false",
+      "knowledge_cards": [],
+      "gpt4": false,
+      "text_completed": false,
+      "blocks": [
+        {
+          "intended_usage": "plan",
+          "plan_block": {
+            "progress": "DONE",
+            "goals": [],
+            "final": true
+          }
+        }
+      ],
+      "message_mode": "STREAMING",
+      "answer_modes": [],
+      "structured_answer_block_usages": [
+        "ask_text_0_markdown"
+      ],
+      "reconnectable": true,
+      "cursor": "069e45f1-610b-781a-8000-74a17eaee769",
+      "classifier_results": {
+        "personal_search": false,
+        "skip_search": true,
+        "widget_type": "GENERAL",
+        "hide_nav": false,
+        "hide_sources": false,
+        "image_generation": false,
+        "time_widget": false,
+        "mhe_predictions": {
+          "skip_search": true,
+          "image_generation_intent": false,
+          "time_widget": false,
+          "places_search_intent": false,
+          "shopping_intent": false,
+          "movie_lists_intent": false,
+          "image_preview": false,
+          "video_preview": false,
+          "nav_intent": false,
+          "personal_search": false,
+          "weather_widget": false,
+          "finance_widget_gating": false,
+          "calculator_widget": false,
+          "comet_nav_widget_combined_target": false,
+          "finance_agent_gating": false
+        },
+        "mhe_predictions_full": {
+          "skip_search": {
+            "is_true": true,
+            "probability": 0.81640625,
+            "threshold": 0.4
+          },
+          "image_generation_intent": {
+            "is_true": false,
+            "probability": 4.005432e-05,
+            "threshold": 0.98
+          },
+          "time_widget": {
+            "is_true": false,
+            "probability": 1.0788441e-05,
+            "threshold": 0.8
+          },
+          "places_search_intent": {
+            "is_true": false,
+            "probability": 0.0039367676,
+            "threshold": 0.85
+          },
+          "shopping_intent": {
+            "is_true": false,
+            "probability": 0.00013160706,
+            "threshold": 0.8
+          },
+          "movie_lists_intent": {
+            "is_true": false,
+            "probability": 0.0008277893,
+            "threshold": 0.65
+          },
+          "image_preview": {
+            "is_true": false,
+            "probability": 0.0008544922,
+            "threshold": 0.42
+          },
+          "video_preview": {
+            "is_true": false,
+            "probability": 0.0010299683,
+            "threshold": 0.5
+          },
+          "nav_intent": {
+            "is_true": false,
+            "probability": 0.00088119507,
+            "threshold": 0.5
+          },
+          "personal_search": {
+            "is_true": false,
+            "probability": 0.0,
+            "threshold": 0.050000000000000044
+          },
+          "skip_personal_search": {
+            "is_true": true,
+            "probability": 1.0,
+            "threshold": 0.95
+          },
+          "weather_widget": {
+            "is_true": false,
+            "probability": 0.00029563904,
+            "threshold": 0.4
+          },
+          "finance_widget_gating": {
+            "is_true": false,
+            "probability": 0.00024604797,
+            "threshold": 0.53
+          },
+          "calculator_widget": {
+            "is_true": false,
+            "probability": 5.096197e-06,
+            "threshold": 0.3
+          },
+          "comet_nav_widget_combined_target": {
+            "is_true": false,
+            "probability": 0.017944336,
+            "threshold": 0.5
+          },
+          "domain_subdomain": {
+            "label": "TRANSLATION/LANGUAGE_TRANSLATION",
+            "probability": 0.7890625
+          },
+          "finance_agent_gating": {
+            "is_true": false,
+            "probability": 1.4722347e-05,
+            "threshold": 0.7
+          }
+        }
+      },
+      "search_implementation_mode": "fast",
+      "search_mode": "SEARCH",
+      "status": "PENDING",
+      "final_sse_message": false
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "backend_uuid": "c99c077e-dba2-4094-b353-c6551033417d",
+      "context_uuid": "0ef77d21-4cfc-4110-a602-eac6355674ac",
+      "uuid": "99d94d65-494c-41bf-82de-5a54c56debc2",
+      "frontend_context_uuid": "a9468900-9b6f-4012-8489-ee887dcb457f",
+      "display_model": "turbo",
+      "mode": "CONCISE",
+      "search_focus": "writing",
+      "source": "default",
+      "read_write_token": "b62b91f9-4ba9-4d00-a198-ef4e51717c16",
+      "thread_url_slug": "ni-hao-yZwHftuiQJSzU8ZVEDNBfQ",
+      "expect_search_results": "false",
+      "knowledge_cards": [],
+      "gpt4": false,
+      "text_completed": false,
+      "message_mode": "STREAMING",
+      "answer_modes": [],
+      "structured_answer_block_usages": [
+        "ask_text_0_markdown"
+      ],
+      "reconnectable": true,
+      "cursor": "069e45f1-6119-798a-8000-38d26b2ca189",
+      "classifier_results": {
+        "personal_search": false,
+        "skip_search": true,
+        "widget_type": "GENERAL",
+        "hide_nav": false,
+        "hide_sources": false,
+        "image_generation": false,
+        "time_widget": false,
+        "mhe_predictions": {
+          "skip_search": true,
+          "image_generation_intent": false,
+          "time_widget": false,
+          "places_search_intent": false,
+          "shopping_intent": false,
+          "movie_lists_intent": false,
+          "image_preview": false,
+          "video_preview": false,
+          "nav_intent": false,
+          "personal_search": false,
+          "weather_widget": false,
+          "finance_widget_gating": false,
+          "calculator_widget": false,
+          "comet_nav_widget_combined_target": false,
+          "finance_agent_gating": false
+        },
+        "mhe_predictions_full": {
+          "skip_search": {
+            "is_true": true,
+            "probability": 0.81640625,
+            "threshold": 0.4
+          },
+          "image_generation_intent": {
+            "is_true": false,
+            "probability": 4.005432e-05,
+            "threshold": 0.98
+          },
+          "time_widget": {
+            "is_true": false,
+            "probability": 1.0788441e-05,
+            "threshold": 0.8
+          },
+          "places_search_intent": {
+            "is_true": false,
+            "probability": 0.0039367676,
+            "threshold": 0.85
+          },
+          "shopping_intent": {
+            "is_true": false,
+            "probability": 0.00013160706,
+            "threshold": 0.8
+          },
+          "movie_lists_intent": {
+            "is_true": false,
+            "probability": 0.0008277893,
+            "threshold": 0.65
+          },
+          "image_preview": {
+            "is_true": false,
+            "probability": 0.0008544922,
+            "threshold": 0.42
+          },
+          "video_preview": {
+            "is_true": false,
+            "probability": 0.0010299683,
+            "threshold": 0.5
+          },
+          "nav_intent": {
+            "is_true": false,
+            "probability": 0.00088119507,
+            "threshold": 0.5
+          },
+          "personal_search": {
+            "is_true": false,
+            "probability": 0.0,
+            "threshold": 0.050000000000000044
+          },
+          "skip_personal_search": {
+            "is_true": true,
+            "probability": 1.0,
+            "threshold": 0.95
+          },
+          "weather_widget": {
+            "is_true": false,
+            "probability": 0.00029563904,
+            "threshold": 0.4
+          },
+          "finance_widget_gating": {
+            "is_true": false,
+            "probability": 0.00024604797,
+            "threshold": 0.53
+          },
+          "calculator_widget": {
+            "is_true": false,
+            "probability": 5.096197e-06,
+            "threshold": 0.3
+          },
+          "comet_nav_widget_combined_target": {
+            "is_true": false,
+            "probability": 0.017944336,
+            "threshold": 0.5
+          },
+          "domain_subdomain": {
+            "label": "TRANSLATION/LANGUAGE_TRANSLATION",
+            "probability": 0.7890625
+          },
+          "finance_agent_gating": {
+            "is_true": false,
+            "probability": 1.4722347e-05,
+            "threshold": 0.7
+          }
+        }
+      },
+      "search_implementation_mode": "fast",
+      "search_mode": "SEARCH",
+      "status": "PENDING",
+      "final_sse_message": false
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "backend_uuid": "c99c077e-dba2-4094-b353-c6551033417d",
+      "context_uuid": "0ef77d21-4cfc-4110-a602-eac6355674ac",
+      "uuid": "99d94d65-494c-41bf-82de-5a54c56debc2",
+      "frontend_context_uuid": "a9468900-9b6f-4012-8489-ee887dcb457f",
+      "display_model": "turbo",
+      "mode": "CONCISE",
+      "search_focus": "writing",
+      "source": "default",
+      "read_write_token": "b62b91f9-4ba9-4d00-a198-ef4e51717c16",
+      "thread_url_slug": "ni-hao-yZwHftuiQJSzU8ZVEDNBfQ",
+      "expect_search_results": "false",
+      "knowledge_cards": [],
+      "gpt4": false,
+      "text_completed": false,
+      "message_mode": "STREAMING",
+      "answer_modes": [],
+      "structured_answer_block_usages": [
+        "ask_text_0_markdown"
+      ],
+      "reconnectable": true,
+      "cursor": "069e45f1-6122-7924-8000-b3a181b29492",
+      "classifier_results": {
+        "personal_search": false,
+        "skip_search": true,
+        "widget_type": "GENERAL",
+        "hide_nav": false,
+        "hide_sources": false,
+        "image_generation": false,
+        "time_widget": false,
+        "mhe_predictions": {
+          "skip_search": true,
+          "image_generation_intent": false,
+          "time_widget": false,
+          "places_search_intent": false,
+          "shopping_intent": false,
+          "movie_lists_intent": false,
+          "image_preview": false,
+          "video_preview": false,
+          "nav_intent": false,
+          "personal_search": false,
+          "weather_widget": false,
+          "finance_widget_gating": false,
+          "calculator_widget": false,
+          "comet_nav_widget_combined_target": false,
+          "finance_agent_gating": false
+        },
+        "mhe_predictions_full": {
+          "skip_search": {
+            "is_true": true,
+            "probability": 0.81640625,
+            "threshold": 0.4
+          },
+          "image_generation_intent": {
+            "is_true": false,
+            "probability": 4.005432e-05,
+            "threshold": 0.98
+          },
+          "time_widget": {
+            "is_true": false,
+            "probability": 1.0788441e-05,
+            "threshold": 0.8
+          },
+          "places_search_intent": {
+            "is_true": false,
+            "probability": 0.0039367676,
+            "threshold": 0.85
+          },
+          "shopping_intent": {
+            "is_true": false,
+            "probability": 0.00013160706,
+            "threshold": 0.8
+          },
+          "movie_lists_intent": {
+            "is_true": false,
+            "probability": 0.0008277893,
+            "threshold": 0.65
+          },
+          "image_preview": {
+            "is_true": false,
+            "probability": 0.0008544922,
+            "threshold": 0.42
+          },
+          "video_preview": {
+            "is_true": false,
+            "probability": 0.0010299683,
+            "threshold": 0.5
+          },
+          "nav_intent": {
+            "is_true": false,
+            "probability": 0.00088119507,
+            "threshold": 0.5
+          },
+          "personal_search": {
+            "is_true": false,
+            "probability": 0.0,
+            "threshold": 0.050000000000000044
+          },
+          "skip_personal_search": {
+            "is_true": true,
+            "probability": 1.0,
+            "threshold": 0.95
+          },
+          "weather_widget": {
+            "is_true": false,
+            "probability": 0.00029563904,
+            "threshold": 0.4
+          },
+          "finance_widget_gating": {
+            "is_true": false,
+            "probability": 0.00024604797,
+            "threshold": 0.53
+          },
+          "calculator_widget": {
+            "is_true": false,
+            "probability": 5.096197e-06,
+            "threshold": 0.3
+          },
+          "comet_nav_widget_combined_target": {
+            "is_true": false,
+            "probability": 0.017944336,
+            "threshold": 0.5
+          },
+          "domain_subdomain": {
+            "label": "TRANSLATION/LANGUAGE_TRANSLATION",
+            "probability": 0.7890625
+          },
+          "finance_agent_gating": {
+            "is_true": false,
+            "probability": 1.4722347e-05,
+            "threshold": 0.7
+          }
+        }
+      },
+      "search_implementation_mode": "fast",
+      "search_mode": "SEARCH",
+      "status": "PENDING",
+      "final_sse_message": false
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "backend_uuid": "c99c077e-dba2-4094-b353-c6551033417d",
+      "context_uuid": "0ef77d21-4cfc-4110-a602-eac6355674ac",
+      "uuid": "99d94d65-494c-41bf-82de-5a54c56debc2",
+      "frontend_context_uuid": "a9468900-9b6f-4012-8489-ee887dcb457f",
+      "display_model": "turbo",
+      "mode": "CONCISE",
+      "search_focus": "writing",
+      "source": "default",
+      "read_write_token": "b62b91f9-4ba9-4d00-a198-ef4e51717c16",
+      "thread_url_slug": "ni-hao-yZwHftuiQJSzU8ZVEDNBfQ",
+      "expect_search_results": "false",
+      "knowledge_cards": [],
+      "gpt4": false,
+      "text_completed": false,
+      "message_mode": "STREAMING",
+      "answer_modes": [],
+      "reconnectable": true,
+      "cursor": "069e45f1-6144-784f-8000-841b60ad6640",
+      "classifier_results": {
+        "personal_search": false,
+        "skip_search": true,
+        "widget_type": "GENERAL",
+        "hide_nav": false,
+        "hide_sources": false,
+        "image_generation": false,
+        "time_widget": false,
+        "mhe_predictions": {
+          "skip_search": true,
+          "image_generation_intent": false,
+          "time_widget": false,
+          "places_search_intent": false,
+          "shopping_intent": false,
+          "movie_lists_intent": false,
+          "image_preview": false,
+          "video_preview": false,
+          "nav_intent": false,
+          "personal_search": false,
+          "weather_widget": false,
+          "finance_widget_gating": false,
+          "calculator_widget": false,
+          "comet_nav_widget_combined_target": false,
+          "finance_agent_gating": false
+        },
+        "mhe_predictions_full": {
+          "skip_search": {
+            "is_true": true,
+            "probability": 0.81640625,
+            "threshold": 0.4
+          },
+          "image_generation_intent": {
+            "is_true": false,
+            "probability": 4.005432e-05,
+            "threshold": 0.98
+          },
+          "time_widget": {
+            "is_true": false,
+            "probability": 1.0788441e-05,
+            "threshold": 0.8
+          },
+          "places_search_intent": {
+            "is_true": false,
+            "probability": 0.0039367676,
+            "threshold": 0.85
+          },
+          "shopping_intent": {
+            "is_true": false,
+            "probability": 0.00013160706,
+            "threshold": 0.8
+          },
+          "movie_lists_intent": {
+            "is_true": false,
+            "probability": 0.0008277893,
+            "threshold": 0.65
+          },
+          "image_preview": {
+            "is_true": false,
+            "probability": 0.0008544922,
+            "threshold": 0.42
+          },
+          "video_preview": {
+            "is_true": false,
+            "probability": 0.0010299683,
+            "threshold": 0.5
+          },
+          "nav_intent": {
+            "is_true": false,
+            "probability": 0.00088119507,
+            "threshold": 0.5
+          },
+          "personal_search": {
+            "is_true": false,
+            "probability": 0.0,
+            "threshold": 0.050000000000000044
+          },
+          "skip_personal_search": {
+            "is_true": true,
+            "probability": 1.0,
+            "threshold": 0.95
+          },
+          "weather_widget": {
+            "is_true": false,
+            "probability": 0.00029563904,
+            "threshold": 0.4
+          },
+          "finance_widget_gating": {
+            "is_true": false,
+            "probability": 0.00024604797,
+            "threshold": 0.53
+          },
+          "calculator_widget": {
+            "is_true": false,
+            "probability": 5.096197e-06,
+            "threshold": 0.3
+          },
+          "comet_nav_widget_combined_target": {
+            "is_true": false,
+            "probability": 0.017944336,
+            "threshold": 0.5
+          },
+          "domain_subdomain": {
+            "label": "TRANSLATION/LANGUAGE_TRANSLATION",
+            "probability": 0.7890625
+          },
+          "finance_agent_gating": {
+            "is_true": false,
+            "probability": 1.4722347e-05,
+            "threshold": 0.7
+          }
+        }
+      },
+      "search_implementation_mode": "fast",
+      "search_mode": "SEARCH",
+      "status": "PENDING",
+      "final_sse_message": false
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "backend_uuid": "c99c077e-dba2-4094-b353-c6551033417d",
+      "context_uuid": "0ef77d21-4cfc-4110-a602-eac6355674ac",
+      "uuid": "99d94d65-494c-41bf-82de-5a54c56debc2",
+      "frontend_context_uuid": "a9468900-9b6f-4012-8489-ee887dcb457f",
+      "display_model": "turbo",
+      "mode": "CONCISE",
+      "search_focus": "writing",
+      "source": "default",
+      "read_write_token": "b62b91f9-4ba9-4d00-a198-ef4e51717c16",
+      "thread_url_slug": "ni-hao-yZwHftuiQJSzU8ZVEDNBfQ",
+      "expect_search_results": "false",
+      "knowledge_cards": [],
+      "gpt4": false,
+      "text_completed": false,
+      "message_mode": "STREAMING",
+      "answer_modes": [
+        {
+          "answer_mode_type": "SEARCH",
+          "has_preview": false
+        },
+        {
+          "answer_mode_type": "IMAGE",
+          "has_preview": false
+        }
+      ],
+      "structured_answer_block_usages": [
+        "ask_text_0_markdown"
+      ],
+      "reconnectable": true,
+      "cursor": "069e45f1-61a2-718f-8000-f3b13674a59f",
+      "classifier_results": {
+        "personal_search": false,
+        "skip_search": true,
+        "widget_type": "GENERAL",
+        "hide_nav": false,
+        "hide_sources": false,
+        "image_generation": false,
+        "time_widget": false,
+        "mhe_predictions": {
+          "skip_search": true,
+          "image_generation_intent": false,
+          "time_widget": false,
+          "places_search_intent": false,
+          "shopping_intent": false,
+          "movie_lists_intent": false,
+          "image_preview": false,
+          "video_preview": false,
+          "nav_intent": false,
+          "personal_search": false,
+          "weather_widget": false,
+          "finance_widget_gating": false,
+          "calculator_widget": false,
+          "comet_nav_widget_combined_target": false,
+          "finance_agent_gating": false
+        },
+        "mhe_predictions_full": {
+          "skip_search": {
+            "is_true": true,
+            "probability": 0.81640625,
+            "threshold": 0.4
+          },
+          "image_generation_intent": {
+            "is_true": false,
+            "probability": 4.005432e-05,
+            "threshold": 0.98
+          },
+          "time_widget": {
+            "is_true": false,
+            "probability": 1.0788441e-05,
+            "threshold": 0.8
+          },
+          "places_search_intent": {
+            "is_true": false,
+            "probability": 0.0039367676,
+            "threshold": 0.85
+          },
+          "shopping_intent": {
+            "is_true": false,
+            "probability": 0.00013160706,
+            "threshold": 0.8
+          },
+          "movie_lists_intent": {
+            "is_true": false,
+            "probability": 0.0008277893,
+            "threshold": 0.65
+          },
+          "image_preview": {
+            "is_true": false,
+            "probability": 0.0008544922,
+            "threshold": 0.42
+          },
+          "video_preview": {
+            "is_true": false,
+            "probability": 0.0010299683,
+            "threshold": 0.5
+          },
+          "nav_intent": {
+            "is_true": false,
+            "probability": 0.00088119507,
+            "threshold": 0.5
+          },
+          "personal_search": {
+            "is_true": false,
+            "probability": 0.0,
+            "threshold": 0.050000000000000044
+          },
+          "skip_personal_search": {
+            "is_true": true,
+            "probability": 1.0,
+            "threshold": 0.95
+          },
+          "weather_widget": {
+            "is_true": false,
+            "probability": 0.00029563904,
+            "threshold": 0.4
+          },
+          "finance_widget_gating": {
+            "is_true": false,
+            "probability": 0.00024604797,
+            "threshold": 0.53
+          },
+          "calculator_widget": {
+            "is_true": false,
+            "probability": 5.096197e-06,
+            "threshold": 0.3
+          },
+          "comet_nav_widget_combined_target": {
+            "is_true": false,
+            "probability": 0.017944336,
+            "threshold": 0.5
+          },
+          "domain_subdomain": {
+            "label": "TRANSLATION/LANGUAGE_TRANSLATION",
+            "probability": 0.7890625
+          },
+          "finance_agent_gating": {
+            "is_true": false,
+            "probability": 1.4722347e-05,
+            "threshold": 0.7
+          }
+        }
+      },
+      "search_implementation_mode": "fast",
+      "telemetry_data": {
+        "has_displayed_search_results": false,
+        "has_first_output_token": false,
+        "has_first_token": true,
+        "country": "US",
+        "is_followup": false,
+        "source": "default",
+        "engine_mode": "auto",
+        "search_implementation_mode": "fast",
+        "has_widget_data": false,
+        "has_useful_renderable_content": true,
+        "region": "us-east-1",
+        "has_nav_results": false,
+        "early_nav_v3_call": false
+      },
+      "search_mode": "SEARCH",
+      "status": "PENDING",
+      "final_sse_message": false
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "backend_uuid": "c99c077e-dba2-4094-b353-c6551033417d",
+      "context_uuid": "0ef77d21-4cfc-4110-a602-eac6355674ac",
+      "uuid": "99d94d65-494c-41bf-82de-5a54c56debc2",
+      "frontend_context_uuid": "a9468900-9b6f-4012-8489-ee887dcb457f",
+      "display_model": "turbo",
+      "mode": "CONCISE",
+      "search_focus": "writing",
+      "source": "default",
+      "read_write_token": "b62b91f9-4ba9-4d00-a198-ef4e51717c16",
+      "thread_url_slug": "ni-hao-yZwHftuiQJSzU8ZVEDNBfQ",
+      "expect_search_results": "false",
+      "knowledge_cards": [],
+      "gpt4": false,
+      "text_completed": false,
+      "message_mode": "STREAMING",
+      "answer_modes": [
+        {
+          "answer_mode_type": "SEARCH",
+          "has_preview": false
+        },
+        {
+          "answer_mode_type": "IMAGE",
+          "has_preview": false
+        }
+      ],
+      "structured_answer_block_usages": [
+        "ask_text_0_markdown"
+      ],
+      "reconnectable": true,
+      "cursor": "069e45f1-61ab-771c-8000-6f0db93c933d",
+      "classifier_results": {
+        "personal_search": false,
+        "skip_search": true,
+        "widget_type": "GENERAL",
+        "hide_nav": false,
+        "hide_sources": false,
+        "image_generation": false,
+        "time_widget": false,
+        "mhe_predictions": {
+          "skip_search": true,
+          "image_generation_intent": false,
+          "time_widget": false,
+          "places_search_intent": false,
+          "shopping_intent": false,
+          "movie_lists_intent": false,
+          "image_preview": false,
+          "video_preview": false,
+          "nav_intent": false,
+          "personal_search": false,
+          "weather_widget": false,
+          "finance_widget_gating": false,
+          "calculator_widget": false,
+          "comet_nav_widget_combined_target": false,
+          "finance_agent_gating": false
+        },
+        "mhe_predictions_full": {
+          "skip_search": {
+            "is_true": true,
+            "probability": 0.81640625,
+            "threshold": 0.4
+          },
+          "image_generation_intent": {
+            "is_true": false,
+            "probability": 4.005432e-05,
+            "threshold": 0.98
+          },
+          "time_widget": {
+            "is_true": false,
+            "probability": 1.0788441e-05,
+            "threshold": 0.8
+          },
+          "places_search_intent": {
+            "is_true": false,
+            "probability": 0.0039367676,
+            "threshold": 0.85
+          },
+          "shopping_intent": {
+            "is_true": false,
+            "probability": 0.00013160706,
+            "threshold": 0.8
+          },
+          "movie_lists_intent": {
+            "is_true": false,
+            "probability": 0.0008277893,
+            "threshold": 0.65
+          },
+          "image_preview": {
+            "is_true": false,
+            "probability": 0.0008544922,
+            "threshold": 0.42
+          },
+          "video_preview": {
+            "is_true": false,
+            "probability": 0.0010299683,
+            "threshold": 0.5
+          },
+          "nav_intent": {
+            "is_true": false,
+            "probability": 0.00088119507,
+            "threshold": 0.5
+          },
+          "personal_search": {
+            "is_true": false,
+            "probability": 0.0,
+            "threshold": 0.050000000000000044
+          },
+          "skip_personal_search": {
+            "is_true": true,
+            "probability": 1.0,
+            "threshold": 0.95
+          },
+          "weather_widget": {
+            "is_true": false,
+            "probability": 0.00029563904,
+            "threshold": 0.4
+          },
+          "finance_widget_gating": {
+            "is_true": false,
+            "probability": 0.00024604797,
+            "threshold": 0.53
+          },
+          "calculator_widget": {
+            "is_true": false,
+            "probability": 5.096197e-06,
+            "threshold": 0.3
+          },
+          "comet_nav_widget_combined_target": {
+            "is_true": false,
+            "probability": 0.017944336,
+            "threshold": 0.5
+          },
+          "domain_subdomain": {
+            "label": "TRANSLATION/LANGUAGE_TRANSLATION",
+            "probability": 0.7890625
+          },
+          "finance_agent_gating": {
+            "is_true": false,
+            "probability": 1.4722347e-05,
+            "threshold": 0.7
+          }
+        }
+      },
+      "search_implementation_mode": "fast",
+      "search_mode": "SEARCH",
+      "status": "PENDING",
+      "final_sse_message": false
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "backend_uuid": "c99c077e-dba2-4094-b353-c6551033417d",
+      "context_uuid": "0ef77d21-4cfc-4110-a602-eac6355674ac",
+      "uuid": "99d94d65-494c-41bf-82de-5a54c56debc2",
+      "frontend_context_uuid": "a9468900-9b6f-4012-8489-ee887dcb457f",
+      "display_model": "turbo",
+      "mode": "CONCISE",
+      "search_focus": "writing",
+      "source": "default",
+      "read_write_token": "b62b91f9-4ba9-4d00-a198-ef4e51717c16",
+      "thread_url_slug": "ni-hao-yZwHftuiQJSzU8ZVEDNBfQ",
+      "expect_search_results": "false",
+      "knowledge_cards": [],
+      "gpt4": false,
+      "text_completed": false,
+      "blocks": [
+        {
+          "intended_usage": "ask_text_0_markdown",
+          "markdown_block": {
+            "progress": "IN_PROGRESS",
+            "chunks": [
+              "你好！😊 有什么我"
+            ],
+            "chunk_starting_offset": 0,
+            "inline_token_annotations": []
+          }
+        },
+        {
+          "intended_usage": "ask_text",
+          "markdown_block": {
+            "progress": "IN_PROGRESS",
+            "chunks": [
+              "你好！😊 有什么我"
+            ],
+            "chunk_starting_offset": 0
+          }
+        }
+      ],
+      "message_mode": "STREAMING",
+      "answer_modes": [
+        {
+          "answer_mode_type": "SEARCH",
+          "has_preview": false
+        },
+        {
+          "answer_mode_type": "IMAGE",
+          "has_preview": false
+        }
+      ],
+      "structured_answer_block_usages": [
+        "ask_text_0_markdown"
+      ],
+      "reconnectable": true,
+      "image_completions": [],
+      "cursor": "069e45f1-6c6c-7927-8000-8ea837e5accb",
+      "classifier_results": {
+        "personal_search": false,
+        "skip_search": true,
+        "widget_type": "GENERAL",
+        "hide_nav": false,
+        "hide_sources": false,
+        "image_generation": false,
+        "time_widget": false,
+        "mhe_predictions": {
+          "skip_search": true,
+          "image_generation_intent": false,
+          "time_widget": false,
+          "places_search_intent": false,
+          "shopping_intent": false,
+          "movie_lists_intent": false,
+          "image_preview": false,
+          "video_preview": false,
+          "nav_intent": false,
+          "personal_search": false,
+          "weather_widget": false,
+          "finance_widget_gating": false,
+          "calculator_widget": false,
+          "comet_nav_widget_combined_target": false,
+          "finance_agent_gating": false
+        },
+        "mhe_predictions_full": {
+          "skip_search": {
+            "is_true": true,
+            "probability": 0.81640625,
+            "threshold": 0.4
+          },
+          "image_generation_intent": {
+            "is_true": false,
+            "probability": 4.005432e-05,
+            "threshold": 0.98
+          },
+          "time_widget": {
+            "is_true": false,
+            "probability": 1.0788441e-05,
+            "threshold": 0.8
+          },
+          "places_search_intent": {
+            "is_true": false,
+            "probability": 0.0039367676,
+            "threshold": 0.85
+          },
+          "shopping_intent": {
+            "is_true": false,
+            "probability": 0.00013160706,
+            "threshold": 0.8
+          },
+          "movie_lists_intent": {
+            "is_true": false,
+            "probability": 0.0008277893,
+            "threshold": 0.65
+          },
+          "image_preview": {
+            "is_true": false,
+            "probability": 0.0008544922,
+            "threshold": 0.42
+          },
+          "video_preview": {
+            "is_true": false,
+            "probability": 0.0010299683,
+            "threshold": 0.5
+          },
+          "nav_intent": {
+            "is_true": false,
+            "probability": 0.00088119507,
+            "threshold": 0.5
+          },
+          "personal_search": {
+            "is_true": false,
+            "probability": 0.0,
+            "threshold": 0.050000000000000044
+          },
+          "skip_personal_search": {
+            "is_true": true,
+            "probability": 1.0,
+            "threshold": 0.95
+          },
+          "weather_widget": {
+            "is_true": false,
+            "probability": 0.00029563904,
+            "threshold": 0.4
+          },
+          "finance_widget_gating": {
+            "is_true": false,
+            "probability": 0.00024604797,
+            "threshold": 0.53
+          },
+          "calculator_widget": {
+            "is_true": false,
+            "probability": 5.096197e-06,
+            "threshold": 0.3
+          },
+          "comet_nav_widget_combined_target": {
+            "is_true": false,
+            "probability": 0.017944336,
+            "threshold": 0.5
+          },
+          "domain_subdomain": {
+            "label": "TRANSLATION/LANGUAGE_TRANSLATION",
+            "probability": 0.7890625
+          },
+          "finance_agent_gating": {
+            "is_true": false,
+            "probability": 1.4722347e-05,
+            "threshold": 0.7
+          }
+        }
+      },
+      "search_implementation_mode": "fast",
+      "telemetry_data": {
+        "has_displayed_search_results": false,
+        "has_first_output_token": true,
+        "has_first_token": true,
+        "country": "US",
+        "is_followup": false,
+        "source": "default",
+        "engine_mode": "auto",
+        "search_implementation_mode": "fast",
+        "has_widget_data": false,
+        "has_useful_renderable_content": true,
+        "region": "us-east-1",
+        "has_nav_results": false,
+        "early_nav_v3_call": false
+      },
+      "search_mode": "SEARCH",
+      "status": "PENDING",
+      "final_sse_message": false
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "backend_uuid": "c99c077e-dba2-4094-b353-c6551033417d",
+      "context_uuid": "0ef77d21-4cfc-4110-a602-eac6355674ac",
+      "uuid": "99d94d65-494c-41bf-82de-5a54c56debc2",
+      "frontend_context_uuid": "a9468900-9b6f-4012-8489-ee887dcb457f",
+      "display_model": "turbo",
+      "mode": "CONCISE",
+      "search_focus": "writing",
+      "source": "default",
+      "read_write_token": "b62b91f9-4ba9-4d00-a198-ef4e51717c16",
+      "thread_url_slug": "ni-hao-yZwHftuiQJSzU8ZVEDNBfQ",
+      "expect_search_results": "false",
+      "knowledge_cards": [],
+      "gpt4": false,
+      "text_completed": true,
+      "blocks": [
+        {
+          "intended_usage": "ask_text_0_markdown",
+          "markdown_block": {
+            "progress": "IN_PROGRESS",
+            "chunks": [
+              "可以帮"
+            ],
+            "chunk_starting_offset": 1
+          }
+        },
+        {
+          "intended_usage": "ask_text",
+          "markdown_block": {
+            "progress": "IN_PROGRESS",
+            "chunks": [
+              "可以帮"
+            ],
+            "chunk_starting_offset": 1
+          }
+        }
+      ],
+      "message_mode": "STREAMING",
+      "answer_modes": [
+        {
+          "answer_mode_type": "SEARCH",
+          "has_preview": false
+        },
+        {
+          "answer_mode_type": "IMAGE",
+          "has_preview": false
+        }
+      ],
+      "structured_answer_block_usages": [
+        "ask_text_0_markdown"
+      ],
+      "reconnectable": true,
+      "image_completions": [],
+      "cursor": "069e45f1-6f77-7e4a-8000-d25126be2c77",
+      "classifier_results": {
+        "personal_search": false,
+        "skip_search": true,
+        "widget_type": "GENERAL",
+        "hide_nav": false,
+        "hide_sources": false,
+        "image_generation": false,
+        "time_widget": false,
+        "mhe_predictions": {
+          "skip_search": true,
+          "image_generation_intent": false,
+          "time_widget": false,
+          "places_search_intent": false,
+          "shopping_intent": false,
+          "movie_lists_intent": false,
+          "image_preview": false,
+          "video_preview": false,
+          "nav_intent": false,
+          "personal_search": false,
+          "weather_widget": false,
+          "finance_widget_gating": false,
+          "calculator_widget": false,
+          "comet_nav_widget_combined_target": false,
+          "finance_agent_gating": false
+        },
+        "mhe_predictions_full": {
+          "skip_search": {
+            "is_true": true,
+            "probability": 0.81640625,
+            "threshold": 0.4
+          },
+          "image_generation_intent": {
+            "is_true": false,
+            "probability": 4.005432e-05,
+            "threshold": 0.98
+          },
+          "time_widget": {
+            "is_true": false,
+            "probability": 1.0788441e-05,
+            "threshold": 0.8
+          },
+          "places_search_intent": {
+            "is_true": false,
+            "probability": 0.0039367676,
+            "threshold": 0.85
+          },
+          "shopping_intent": {
+            "is_true": false,
+            "probability": 0.00013160706,
+            "threshold": 0.8
+          },
+          "movie_lists_intent": {
+            "is_true": false,
+            "probability": 0.0008277893,
+            "threshold": 0.65
+          },
+          "image_preview": {
+            "is_true": false,
+            "probability": 0.0008544922,
+            "threshold": 0.42
+          },
+          "video_preview": {
+            "is_true": false,
+            "probability": 0.0010299683,
+            "threshold": 0.5
+          },
+          "nav_intent": {
+            "is_true": false,
+            "probability": 0.00088119507,
+            "threshold": 0.5
+          },
+          "personal_search": {
+            "is_true": false,
+            "probability": 0.0,
+            "threshold": 0.050000000000000044
+          },
+          "skip_personal_search": {
+            "is_true": true,
+            "probability": 1.0,
+            "threshold": 0.95
+          },
+          "weather_widget": {
+            "is_true": false,
+            "probability": 0.00029563904,
+            "threshold": 0.4
+          },
+          "finance_widget_gating": {
+            "is_true": false,
+            "probability": 0.00024604797,
+            "threshold": 0.53
+          },
+          "calculator_widget": {
+            "is_true": false,
+            "probability": 5.096197e-06,
+            "threshold": 0.3
+          },
+          "comet_nav_widget_combined_target": {
+            "is_true": false,
+            "probability": 0.017944336,
+            "threshold": 0.5
+          },
+          "domain_subdomain": {
+            "label": "TRANSLATION/LANGUAGE_TRANSLATION",
+            "probability": 0.7890625
+          },
+          "finance_agent_gating": {
+            "is_true": false,
+            "probability": 1.4722347e-05,
+            "threshold": 0.7
+          }
+        }
+      },
+      "search_implementation_mode": "fast",
+      "search_mode": "SEARCH",
+      "status": "PENDING",
+      "final_sse_message": false
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "backend_uuid": "c99c077e-dba2-4094-b353-c6551033417d",
+      "context_uuid": "0ef77d21-4cfc-4110-a602-eac6355674ac",
+      "uuid": "99d94d65-494c-41bf-82de-5a54c56debc2",
+      "frontend_context_uuid": "a9468900-9b6f-4012-8489-ee887dcb457f",
+      "display_model": "turbo",
+      "mode": "CONCISE",
+      "search_focus": "writing",
+      "source": "default",
+      "read_write_token": "b62b91f9-4ba9-4d00-a198-ef4e51717c16",
+      "thread_url_slug": "ni-hao-yZwHftuiQJSzU8ZVEDNBfQ",
+      "expect_search_results": "false",
+      "knowledge_cards": [],
+      "gpt4": false,
+      "text_completed": true,
+      "blocks": [
+        {
+          "intended_usage": "ask_text_0_markdown",
+          "markdown_block": {
+            "progress": "IN_PROGRESS",
+            "chunks": [
+              "你的吗？"
+            ],
+            "chunk_starting_offset": 2
+          }
+        },
+        {
+          "intended_usage": "ask_text",
+          "markdown_block": {
+            "progress": "IN_PROGRESS",
+            "chunks": [
+              "你的吗？"
+            ],
+            "chunk_starting_offset": 2
+          }
+        }
+      ],
+      "message_mode": "STREAMING",
+      "answer_modes": [
+        {
+          "answer_mode_type": "SEARCH",
+          "has_preview": false
+        },
+        {
+          "answer_mode_type": "IMAGE",
+          "has_preview": false
+        }
+      ],
+      "structured_answer_block_usages": [
+        "ask_text_0_markdown"
+      ],
+      "reconnectable": true,
+      "image_completions": [],
+      "cursor": "069e45f1-6f82-7143-8000-96b0b990611f",
+      "classifier_results": {
+        "personal_search": false,
+        "skip_search": true,
+        "widget_type": "GENERAL",
+        "hide_nav": false,
+        "hide_sources": false,
+        "image_generation": false,
+        "time_widget": false,
+        "mhe_predictions": {
+          "skip_search": true,
+          "image_generation_intent": false,
+          "time_widget": false,
+          "places_search_intent": false,
+          "shopping_intent": false,
+          "movie_lists_intent": false,
+          "image_preview": false,
+          "video_preview": false,
+          "nav_intent": false,
+          "personal_search": false,
+          "weather_widget": false,
+          "finance_widget_gating": false,
+          "calculator_widget": false,
+          "comet_nav_widget_combined_target": false,
+          "finance_agent_gating": false
+        },
+        "mhe_predictions_full": {
+          "skip_search": {
+            "is_true": true,
+            "probability": 0.81640625,
+            "threshold": 0.4
+          },
+          "image_generation_intent": {
+            "is_true": false,
+            "probability": 4.005432e-05,
+            "threshold": 0.98
+          },
+          "time_widget": {
+            "is_true": false,
+            "probability": 1.0788441e-05,
+            "threshold": 0.8
+          },
+          "places_search_intent": {
+            "is_true": false,
+            "probability": 0.0039367676,
+            "threshold": 0.85
+          },
+          "shopping_intent": {
+            "is_true": false,
+            "probability": 0.00013160706,
+            "threshold": 0.8
+          },
+          "movie_lists_intent": {
+            "is_true": false,
+            "probability": 0.0008277893,
+            "threshold": 0.65
+          },
+          "image_preview": {
+            "is_true": false,
+            "probability": 0.0008544922,
+            "threshold": 0.42
+          },
+          "video_preview": {
+            "is_true": false,
+            "probability": 0.0010299683,
+            "threshold": 0.5
+          },
+          "nav_intent": {
+            "is_true": false,
+            "probability": 0.00088119507,
+            "threshold": 0.5
+          },
+          "personal_search": {
+            "is_true": false,
+            "probability": 0.0,
+            "threshold": 0.050000000000000044
+          },
+          "skip_personal_search": {
+            "is_true": true,
+            "probability": 1.0,
+            "threshold": 0.95
+          },
+          "weather_widget": {
+            "is_true": false,
+            "probability": 0.00029563904,
+            "threshold": 0.4
+          },
+          "finance_widget_gating": {
+            "is_true": false,
+            "probability": 0.00024604797,
+            "threshold": 0.53
+          },
+          "calculator_widget": {
+            "is_true": false,
+            "probability": 5.096197e-06,
+            "threshold": 0.3
+          },
+          "comet_nav_widget_combined_target": {
+            "is_true": false,
+            "probability": 0.017944336,
+            "threshold": 0.5
+          },
+          "domain_subdomain": {
+            "label": "TRANSLATION/LANGUAGE_TRANSLATION",
+            "probability": 0.7890625
+          },
+          "finance_agent_gating": {
+            "is_true": false,
+            "probability": 1.4722347e-05,
+            "threshold": 0.7
+          }
+        }
+      },
+      "search_implementation_mode": "fast",
+      "search_mode": "SEARCH",
+      "status": "PENDING",
+      "final": true,
+      "final_sse_message": false
+    }
+  },
+  {
+    "event": "message",
+    "data": {
+      "backend_uuid": "c99c077e-dba2-4094-b353-c6551033417d",
+      "context_uuid": "0ef77d21-4cfc-4110-a602-eac6355674ac",
+      "uuid": "99d94d65-494c-41bf-82de-5a54c56debc2",
+      "frontend_context_uuid": "a9468900-9b6f-4012-8489-ee887dcb457f",
+      "frontend_uuid": "99d94d65-494c-41bf-82de-5a54c56debc2",
+      "text": "[{\"step_type\": \"INITIAL_QUERY\", \"content\": {\"goal_id\": null, \"query\": \"\\u4f60\\u597d\"}, \"uuid\": \"\"}, {\"step_type\": \"FINAL\", \"content\": {\"goal_id\": null, \"answer\": \"{\\\"answer\\\": \\\"\\\\u4f60\\\\u597d\\\\uff01\\\\ud83d\\\\ude0a \\\\u6709\\\\u4ec0\\\\u4e48\\\\u6211\\\\u53ef\\\\u4ee5\\\\u5e2e\\\\u4f60\\\\u7684\\\\u5417\\\\uff1f\\\", \\\"web_results\\\": [], \\\"chunks\\\": [\\\"\\\\u4f60\\\\u597d\\\\uff01\\\\ud83d\\\\ude0a \\\\u6709\\\\u4ec0\\\\u4e48\\\\u6211\\\", \\\"\\\\u53ef\\\\u4ee5\\\\u5e2e\\\", \\\"\\\\u4f60\\\\u7684\\\\u5417\\\\uff1f\\\"], \\\"extra_web_results\\\": [], \\\"structured_answer\\\": [{\\\"type\\\": \\\"markdown\\\", \\\"text\\\": \\\"\\\\u4f60\\\\u597d\\\\uff01\\\\ud83d\\\\ude0a \\\\u6709\\\\u4ec0\\\\u4e48\\\\u6211\\\\u53ef\\\\u4ee5\\\\u5e2e\\\\u4f60\\\\u7684\\\\u5417\\\\uff1f\\\", \\\"chunks\\\": [\\\"\\\\u4f60\\\\u597d\\\\uff01\\\\ud83d\\\\ude0a \\\\u6709\\\\u4ec0\\\\u4e48\\\\u6211\\\\u53ef\\\\u4ee5\\\\u5e2e\\\\u4f60\\\\u7684\\\\u5417\\\\uff1f\\\"], \\\"images\\\": [], \\\"inline_token_annotations\\\": []}]}\"}, \"uuid\": \"\"}]",
+      "thread_title": "你好",
+      "related_queries": [],
+      "display_model": "turbo",
+      "user_selected_model": "turbo",
+      "personalized": true,
+      "mode": "COPILOT",
+      "query_str": "你好",
+      "search_focus": "writing",
+      "source": "default",
+      "updated_datetime": "2026-04-19T04:50:31.017453",
+      "read_write_token": "b62b91f9-4ba9-4d00-a198-ef4e51717c16",
+      "step_type": "FINAL",
+      "bookmark_state": "NOT_BOOKMARKED",
+      "s3_social_preview_url": "https://ppl-ai-public.s3.amazonaws.com/static/img/pplx-default-preview.png",
+      "thread_access": 2,
+      "thread_url_slug": "ni-hao-yZwHftuiQJSzU8ZVEDNBfQ",
+      "plan": {
+        "goals": [],
+        "final": true
+      },
+      "privacy_state": "NONE",
+      "gpt4": false,
+      "text_completed": true,
+      "entry_created_datetime": "2026-04-19T04:50:30.030871+00:00",
+      "entry_updated_datetime": "2026-04-19T04:50:30.971292+00:00",
+      "blocks": [
+        {
+          "intended_usage": "plan",
+          "plan_block": {
+            "progress": "DONE",
+            "goals": [],
+            "final": true
+          }
+        },
+        {
+          "intended_usage": "ask_text_0_markdown",
+          "markdown_block": {
+            "progress": "DONE",
+            "chunks": [
+              "你好！😊 有什么我可以帮你的吗？"
+            ],
+            "chunk_starting_offset": 0,
+            "answer": "你好！😊 有什么我可以帮你的吗？",
+            "inline_token_annotations": []
+          }
+        },
+        {
+          "intended_usage": "ask_text",
+          "markdown_block": {
+            "progress": "DONE",
+            "chunks": [
+              "你好！😊 有什么我",
+              "可以帮",
+              "你的吗？"
+            ],
+            "chunk_starting_offset": 0,
+            "answer": "你好！😊 有什么我可以帮你的吗？"
+          }
+        },
+        {
+          "intended_usage": "pro_search_steps",
+          "plan_block": {
+            "progress": "DONE",
+            "goals": [],
+            "steps": [
+              {
+                "uuid": "",
+                "step_type": "INITIAL_QUERY",
+                "initial_query_content": {
+                  "query": "你好"
+                }
+              }
+            ],
+            "final": true
+          }
+        }
+      ],
+      "message_mode": "FULL",
+      "access_level": "PUBLIC_READ",
+      "answer_modes": [
+        {
+          "answer_mode_type": "SEARCH",
+          "has_preview": false
+        },
+        {
+          "answer_mode_type": "IMAGE",
+          "has_preview": false
+        }
+      ],
+      "structured_answer_block_usages": [
+        "ask_text_0_markdown"
+      ],
+      "reconnectable": false,
+      "cursor": "069e45f1-70b8-71fa-8000-0cd96c02d3de",
+      "classifier_results": {
+        "personal_search": false,
+        "skip_search": false,
+        "hide_nav": false,
+        "hide_sources": false,
+        "image_generation": false,
+        "time_widget": false,
+        "mhe_predictions": {
+          "skip_search": false,
+          "image_generation_intent": false,
+          "time_widget": false,
+          "places_search_intent": false,
+          "shopping_intent": false,
+          "movie_lists_intent": false,
+          "image_preview": false,
+          "video_preview": false,
+          "nav_intent": false,
+          "personal_search": false,
+          "weather_widget": false,
+          "finance_widget_gating": false,
+          "calculator_widget": false,
+          "comet_nav_widget_combined_target": false,
+          "finance_agent_gating": false
+        },
+        "mhe_predictions_full": {
+          "skip_search": {
+            "is_true": false
+          },
+          "image_generation_intent": {
+            "is_true": false,
+            "probability": 4.005432e-05,
+            "threshold": 0.98
+          },
+          "time_widget": {
+            "is_true": false,
+            "probability": 1.0788441e-05,
+            "threshold": 0.8
+          },
+          "places_search_intent": {
+            "is_true": false,
+            "probability": 0.0039367676,
+            "threshold": 0.85
+          },
+          "shopping_intent": {
+            "is_true": false,
+            "probability": 0.00013160706,
+            "threshold": 0.8
+          },
+          "movie_lists_intent": {
+            "is_true": false,
+            "probability": 0.0008277893,
+            "threshold": 0.65
+          },
+          "image_preview": {
+            "is_true": false,
+            "probability": 0.0008544922,
+            "threshold": 0.42
+          },
+          "video_preview": {
+            "is_true": false,
+            "probability": 0.0010299683,
+            "threshold": 0.5
+          },
+          "nav_intent": {
+            "is_true": false,
+            "probability": 0.00088119507,
+            "threshold": 0.5
+          },
+          "personal_search": {
+            "is_true": false
+          },
+          "skip_personal_search": {
+            "is_true": true,
+            "probability": 1.0,
+            "threshold": 0.95
+          },
+          "weather_widget": {
+            "is_true": false,
+            "probability": 0.00029563904,
+            "threshold": 0.4
+          },
+          "finance_widget_gating": {
+            "is_true": false,
+            "probability": 0.00024604797,
+            "threshold": 0.53
+          },
+          "calculator_widget": {
+            "is_true": false,
+            "probability": 5.096197e-06,
+            "threshold": 0.3
+          },
+          "comet_nav_widget_combined_target": {
+            "is_true": false,
+            "probability": 0.017944336,
+            "threshold": 0.5
+          },
+          "domain_subdomain": {
+            "label": "TRANSLATION/LANGUAGE_TRANSLATION",
+            "probability": 0.7890625
+          },
+          "finance_agent_gating": {
+            "is_true": false,
+            "probability": 1.4722347e-05,
+            "threshold": 0.7
+          }
+        }
+      },
+      "search_implementation_mode": "fast",
+      "query_language": "zh",
+      "search_mode": "SEARCH",
+      "status": "COMPLETED",
+      "final": true,
+      "_extras": {
+        "next": null,
+        "country": "US",
+        "subdomain": null,
+        "pro_search_mode": "auto",
+        "subscription_tier": null,
+        "payment_tier": null,
+        "core_elapsed": 1.2867007018066943
+      },
+      "final_sse_message": true
+    }
+  },
+  {
+    "event": "end_of_stream",
+    "data": {}
+  }
+]

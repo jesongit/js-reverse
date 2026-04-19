@@ -45,6 +45,7 @@
 - [工具完整参数](05-project/tool-reference.md) — 23个工具的详细参数说明
 - [反检测工作记录](05-project/反检测工作记录.md) — 反检测机制/根因分析/故障排除
 - [Notion env 抓取模式](05-project/notion-env-capture-pattern.md) — 从真实请求提取凭证的证据化流程
+- [Notion 实时证据与多源 env 提取](05-project/notion-live-evidence-and-multi-source-env.md) — 登录态、多源上下文、初始化接口联合恢复
 - [独立运行交付优先级](05-project/independent-delivery-priority.md) — 纯脚本优先、headless 次之的交付规则
 
 ### 06-learning/ 入门学习资源
@@ -60,6 +61,7 @@
 | `05-advanced/` | 高级技术（反调试、指纹、RPC、WASM） |
 | `06-case-studies/` | 实战案例 |
 | `07-resources/` | 资源（练习平台、工具、学习路径） |
+| `08-mistakes/` | 错题本（高频误判、快速检查项） |
 
 ## 快速查找
 

@@ -167,7 +167,7 @@ python auto_register.py list
 
 - 服务可启动 / 停止
 - `GET /v1/models` 正常
-- `POST /v1/chat/completions` 正常
+- `POST /v1/chat/completions` 正常，`stream=true` 已改为基于 Notion NDJSON 的真实流式转发
 - 可用真实 Notion 凭证完成对话
 - 返回文本编码正常
 - `auto_register.py register --export --headless` 可完成独立注册
@@ -190,6 +190,14 @@ python auto_register.py list
 
 - `README.md`：维护稳定说明、使用方式与当前能力
 - `WORKLOG.md`：维护关键过程记录、证据、阻塞点、结论与下一步
+
+## AI 接口补充说明
+
+- 已实抓到可直接用于账号额度与 AI 使用量建模的接口：`getSubscriptionData`、`getAIUsageEligibility`、`getAIUsageEligibilityV2`、`getSubscriptionEntitlements`、`getBillingSubscriptionBannerData`、`getSubscriptionBanner`、`getSpaceBlockUsage`、`getTranscriptionUsage`。
+- 当前样本空间已确认：`subscriptionTier=free`、`accountBalance=0`、`AI free spaceLimit=150`、`userLimit=75`、`transcription limit=7200s`。
+- 对话主链路使用 `POST /api/v3/runInferenceTranscript`，返回 `application/x-ndjson`，当前代理已按真实流式逐行转发。
+- 已沉淀的账号/订阅相关重点接口包括：`getAppConfig`、`getSpacesInitial`、`getUserAnalyticsSettings`、`getLifecycleUserProfile`、`syncRecordValuesMain`、`syncRecordValuesSpaceInitial`、`getJoinableSpaces`、`isUserDomainJoinable`、`validateUserCanCreateWorkspace`、`isEmailEducation`、`getGeoIpLocation`、`checkEmailEligibilityForConnectedAppProducts`、`getVerifiedEmailDomain`、`getDesktopAppRegistration`、`getSubscriptionData`、`getVisibleUsers`、`getSimilarUsers`、`getTeamsV2`、`getUserHomePages`，以及 `billing_subscription_status` banner 链路。
+- 详细接口分析、字段用途和后续抓包建议见 [registration-analysis-report.md](registration-analysis-report.md)。
 
 ## 注意事项
 

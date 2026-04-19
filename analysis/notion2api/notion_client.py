@@ -3,6 +3,7 @@
 import json
 import re
 import uuid
+from collections.abc import AsyncGenerator
 from datetime import datetime, timezone
 from typing import Any
 
@@ -204,33 +205,50 @@ def parse_response(ndjson_text: str) -> dict:
         line = line.strip()
         if not line:
             continue
-        try:
-            p = json.loads(line)
-        except json.JSONDecodeError:
+        result = parse_stream_line(line)
+        if not result:
             continue
-
-        # 格式 1: markdown-chat 直接事件（Gemini 模型）
-        if p.get("type") == "markdown-chat" and p.get("data"):
-            data = p["data"]
-            if isinstance(data, str):
-                data = json.loads(data)
-            if data.get("markdown") is not None:
-                clean_text = data["markdown"]
-                if data.get("inputTokens") is not None:
-                    usage = {"inputTokens": data["inputTokens"], "outputTokens": data["outputTokens"]}
-                    model = data.get("model", model)
-
-        # 格式 2: record-map（标准 patch 响应）
-        if p.get("type") == "record-map":
-            result = _extract_from_record_map(p.get("recordMap", {}))
-            if result:
-                clean_text = result["text"]
-                if result["usage"]:
-                    usage = result["usage"]
-                if result["model"]:
-                    model = result["model"]
+        if result["text"] is not None:
+            clean_text = result["text"]
+        if result["usage"]:
+            usage = result["usage"]
+        if result["model"]:
+            model = result["model"]
 
     return {"text": clean_content(clean_text), "usage": usage, "model": model}
+
+
+def parse_stream_line(line: str) -> dict | None:
+    """解析单行 NDJSON 事件。"""
+    try:
+        payload = json.loads(line)
+    except json.JSONDecodeError:
+        return None
+
+    text = None
+    usage = None
+    model = None
+
+    if payload.get("type") == "markdown-chat" and payload.get("data"):
+        data = payload["data"]
+        if isinstance(data, str):
+            data = json.loads(data)
+        if data.get("markdown") is not None:
+            text = data["markdown"]
+            if data.get("inputTokens") is not None:
+                usage = {"inputTokens": data["inputTokens"], "outputTokens": data["outputTokens"]}
+                model = data.get("model")
+
+    if payload.get("type") == "record-map":
+        result = _extract_from_record_map(payload.get("recordMap", {}))
+        if result:
+            text = result["text"]
+            usage = result["usage"]
+            model = result["model"]
+
+    if text is None and not usage and not model:
+        return None
+    return {"text": text, "usage": usage, "model": model}
 
 
 async def call_notion_api(config: dict, user_message: str, notion_model: str | None) -> httpx.Response:
@@ -247,17 +265,58 @@ async def call_notion_api(config: dict, user_message: str, notion_model: str | N
     return resp
 
 
+async def iter_notion_stream(
+    config: dict,
+    user_message: str,
+    notion_model: str | None,
+) -> AsyncGenerator[dict, None]:
+    """流式读取 Notion NDJSON 响应。"""
+    body = build_request_body(config, user_message, notion_model)
+    headers = build_headers(config)
+    async with httpx.AsyncClient(timeout=120) as client:
+        async with client.stream(
+            "POST",
+            f"{NOTION_API_BASE}/runInferenceTranscript",
+            headers=headers,
+            json=body,
+        ) as resp:
+            resp.raise_for_status()
+            async for line in resp.aiter_lines():
+                line = line.strip()
+                if not line:
+                    continue
+                result = parse_stream_line(line)
+                if result:
+                    yield result
+
+
 async def stream_chat(config: dict, user_message: str, notion_model: str | None):
-    """流式调用 — 收集完整响应后分块输出。"""
-    resp = await call_notion_api(config, user_message, notion_model)
-    result = parse_response(resp.text)
+    """真实流式调用。"""
+    emitted_text = ""
+    final_usage = None
+    final_model = "notion-ai"
 
-    # 分块输出干净文本
-    chunk_size = 2
-    for i in range(0, len(result["text"]), chunk_size):
-        yield {"text": result["text"][i:i + chunk_size], "done": False}
+    async for chunk in iter_notion_stream(config, user_message, notion_model):
+        if chunk["usage"]:
+            final_usage = chunk["usage"]
+        if chunk["model"]:
+            final_model = chunk["model"]
+        if chunk["text"] is None:
+            continue
 
-    yield {"text": "", "done": True, "usage": result["usage"], "model": result["model"]}
+        current_text = clean_content(chunk["text"])
+        if not current_text.startswith(emitted_text):
+            if current_text:
+                emitted_text = current_text
+                yield {"text": current_text, "done": False}
+            continue
+
+        delta = current_text[len(emitted_text):]
+        emitted_text = current_text
+        if delta:
+            yield {"text": delta, "done": False}
+
+    yield {"text": "", "done": True, "usage": final_usage, "model": final_model}
 
 
 async def chat_complete(config: dict, user_message: str, notion_model: str | None) -> dict:
